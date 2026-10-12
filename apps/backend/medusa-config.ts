@@ -95,6 +95,10 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET,
     }
   },
+  admin: {
+    // Product photos straight from the camera are larger than the 1 MB default.
+    maxUploadFileSize: 10 * 1024 * 1024,
+  },
   modules: [
     ...redisModules,
     ...fileModule,
