@@ -1,0 +1,146 @@
+import { MedusaContainer } from "@medusajs/framework";
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
+import {
+  createTranslationsWorkflow,
+  updateStoresWorkflow,
+} from "@medusajs/medusa/core-flows";
+
+/**
+ * The catalogue is written in German. This adds the English translations and
+ * enables de-DE and en-US on the store. New products are translated in the
+ * admin afterwards.
+ */
+const LOCALE = "en-US";
+
+const PRODUCTS: Record<string, Record<string, string>> = {
+  patronenbox: {
+    title: "Ammo Box",
+    subtitle: "3D printed to order",
+    description:
+      "Sturdy ammo box with a hinged lid, made to fit your caliber. Every box is printed in your chosen color after you order.",
+  },
+};
+const CATEGORIES: Record<string, string> = {
+  munitionsboxen: "Ammo Boxes",
+};
+const OPTIONS: Record<string, string> = {
+  Kaliber: "Caliber",
+  "Größe": "Size",
+  Farbe: "Color",
+};
+const OPTION_VALUES: Record<string, string> = {
+  "25 Schuss": "25 rounds",
+  "50 Schuss": "50 rounds",
+  "100 Schuss": "100 rounds",
+  Schwarz: "Black",
+  Oliv: "Olive",
+  Sand: "Sand",
+  Rot: "Red",
+};
+const SHIPPING_OPTION_TYPES: Record<string, Record<string, string>> = {
+  "dhl-paket": {
+    label: "DHL Parcel",
+    description: "Delivered 1-2 business days after production.",
+  },
+};
+
+type TranslationInput = {
+  reference_id: string;
+  reference: string;
+  locale_code: string;
+  translations: Record<string, string>;
+};
+
+export default async function translations_en({
+  container,
+}: {
+  container: MedusaContainer;
+}) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
+  const query = container.resolve(ContainerRegistrationKeys.QUERY);
+
+  const { data: stores } = await query.graph({
+    entity: "store",
+    fields: ["id"],
+  });
+
+  await updateStoresWorkflow(container).run({
+    input: {
+      selector: { id: stores[0].id },
+      update: {
+        supported_locales: [{ locale_code: "de-DE" }, { locale_code: LOCALE }],
+      },
+    },
+  });
+
+  const translations: TranslationInput[] = [];
+  const add = (
+    reference: string,
+    reference_id: string,
+    fields: Record<string, string> | undefined
+  ) => {
+    if (fields) {
+      translations.push({
+        reference,
+        reference_id,
+        locale_code: LOCALE,
+        translations: fields,
+      });
+    }
+  };
+
+  const { data: products } = await query.graph({
+    entity: "product",
+    fields: ["id", "handle"],
+  });
+  products.forEach((product) =>
+    add("product", product.id, PRODUCTS[product.handle])
+  );
+
+  const { data: categories } = await query.graph({
+    entity: "product_category",
+    fields: ["id", "handle"],
+  });
+  categories.forEach((category) =>
+    add(
+      "product_category",
+      category.id,
+      CATEGORIES[category.handle]
+        ? { name: CATEGORIES[category.handle] }
+        : undefined
+    )
+  );
+
+  const { data: options } = await query.graph({
+    entity: "product_option",
+    fields: ["id", "title", "values.id", "values.value"],
+  });
+  options.forEach((option) => {
+    add(
+      "product_option",
+      option.id,
+      OPTIONS[option.title] ? { title: OPTIONS[option.title] } : undefined
+    );
+    (option.values ?? []).forEach((value) => {
+      if (value && OPTION_VALUES[value.value]) {
+        add("product_option_value", value.id, {
+          value: OPTION_VALUES[value.value],
+        });
+      }
+    });
+  });
+
+  const { data: shippingOptionTypes } = await query.graph({
+    entity: "shipping_option_type",
+    fields: ["id", "code"],
+  });
+  shippingOptionTypes.forEach((type) =>
+    add("shipping_option_type", type.id, SHIPPING_OPTION_TYPES[type.code])
+  );
+
+  await createTranslationsWorkflow(container).run({
+    input: { translations },
+  });
+
+  logger.info(`Created ${translations.length} ${LOCALE} translations.`);
+}
