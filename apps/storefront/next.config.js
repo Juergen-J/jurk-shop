@@ -11,6 +11,9 @@ checkEnvVariables()
 const S3_HOSTNAME = process.env.MEDUSA_CLOUD_S3_HOSTNAME
 const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
 
+/** Public hostname of the R2 bucket with product images, e.g. images.jurk.pro */
+const FILE_HOSTNAME = process.env.NEXT_PUBLIC_FILE_HOSTNAME
+
 /**
  * @type {import('next').NextConfig}
  */
@@ -42,6 +45,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "*.s3.amazonaws.com",
       },
+      ...(FILE_HOSTNAME ? [{ protocol: "https", hostname: FILE_HOSTNAME }] : []),
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
             {

@@ -59,6 +59,16 @@ export default async function translations_en({
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
   const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
+  const { data: existing } = await query.graph({
+    entity: "translation",
+    fields: ["id"],
+    filters: { locale_code: LOCALE },
+  });
+  if (existing.length) {
+    logger.info(`${LOCALE} translations already exist, skipping.`);
+    return;
+  }
+
   const { data: stores } = await query.graph({
     entity: "store",
     fields: ["id"],

@@ -15,6 +15,7 @@
   "scripts": {
     "build": "medusa build",
     "start": "medusa start",
+    "predeploy": "medusa db:migrate",
     "dev": "medusa develop",
     "lint": "medusa lint",
     "test:integration:http": "TEST_TYPE=integration:http NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
@@ -29,6 +30,7 @@
     "@medusajs/dashboard": "2.21.2",
     "@medusajs/draft-order": "2.21.2",
     "@medusajs/framework": "2.21.2",
+    "@medusajs/icons": "2.21.2",
     "@medusajs/js-sdk": "^2.21.2",
     "@medusajs/medusa": "2.21.2",
     "@medusajs/ui": "4.2.6",
@@ -59,5 +61,5 @@
   "engines": {
     "node": ">=22.22.0"
   },
-  "packageManager": "npm@11.19.0"
+  "packageManager": "pnpm@10.34.7"
 }

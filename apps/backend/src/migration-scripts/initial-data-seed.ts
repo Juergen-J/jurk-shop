@@ -63,6 +63,17 @@ export default async function initial_data_seed({
     ModuleRegistrationName.FULFILLMENT
   );
 
+  // Migration scripts are tracked by file name, which differs between the
+  // dev (.ts) and the production build (.js). Never seed a store twice.
+  const { data: existingStores } = await query.graph({
+    entity: "store",
+    fields: ["id"],
+  });
+  if (existingStores.length) {
+    logger.info("Store already exists, skipping the initial data seed.");
+    return;
+  }
+
   const countries = ["de"];
 
   logger.info("Seeding store data...");
