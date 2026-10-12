@@ -18,22 +18,25 @@ Deploy the **backend first**: the storefront needs its publishable API key.
 
 ### Backend
 
-- Build command: `pnpm turbo build --filter=@dtc/backend`
-- Start command: `cd apps/backend/.medusa/server && npm install && npm run predeploy && npm run start`
-  - `predeploy` runs the database migrations and the migration scripts
-    (initial store setup, § 19 UStG tax rate, English translations). They are
-    idempotent, so redeploys are safe.
-- Healthcheck path: `/health`
-- If migrations fail with "Could not connect to the database ... timed out":
-  in production Medusa connects with SSL to every host except localhost. If
-  the database has no SSL, append `?sslmode=disable` to `DATABASE_URL`.
+- Settings → Source: this repo, root directory empty (the repo root).
+- Variable `RAILWAY_DOCKERFILE_PATH=apps/backend/Dockerfile`: Railway then
+  builds the same image as the local Docker stack. On every start it runs
+  the migrations and migration scripts (initial store setup, § 19 UStG tax
+  rate, product catalogue, English translations). They are idempotent, so
+  redeploys are safe.
+- Settings → Healthcheck path: `/health`
+- Settings → Networking: generate a domain (or add `api.jurk.pro`), port 9000.
+- Postgres on Railway's private network has no SSL: append
+  `?sslmode=disable` to `DATABASE_URL`, otherwise migrations time out.
+- Redis on Railway's private network is IPv6 only: append `?family=0` to
+  `REDIS_URL`.
 
 Variables:
 
 ```
 NODE_ENV=production
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-REDIS_URL=${{Redis.REDIS_URL}}
+DATABASE_URL=${{Postgres.DATABASE_URL}}?sslmode=disable
+REDIS_URL=${{Redis.REDIS_URL}}?family=0
 JWT_SECRET=<openssl rand -base64 32>
 COOKIE_SECRET=<openssl rand -base64 32>
 STORE_CORS=https://shop.jurk.pro
@@ -60,8 +63,11 @@ S3_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
 
 ### Storefront
 
-- Build command: `pnpm turbo build --filter=@dtc/storefront`
-- Start command: `cd apps/storefront && pnpm start` (listens on `$PORT`)
+- Same repo, variable `RAILWAY_DOCKERFILE_PATH=apps/storefront/Dockerfile`.
+- Networking: domain `shop.jurk.pro`, port 8000.
+- The build renders pages with data from the backend, so
+  `NEXT_PUBLIC_MEDUSA_BACKEND_URL` must be the backend's public URL (the
+  private network is not available during builds).
 
 Variables (needed at build time, so redeploy after changing them):
 
