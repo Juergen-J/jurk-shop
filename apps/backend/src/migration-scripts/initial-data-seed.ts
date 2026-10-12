@@ -3,13 +3,9 @@ import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   Modules,
-  ProductStatus,
 } from "@medusajs/framework/utils";
 import {
   createApiKeysWorkflow,
-  createProductCategoriesWorkflow,
-  createProductOptionsWorkflow,
-  createProductsWorkflow,
   createRegionsWorkflow,
   createSalesChannelsWorkflow,
   createShippingOptionsWorkflow,
@@ -21,23 +17,6 @@ import {
 } from "@medusajs/medusa/core-flows";
 
 /**
- * Sample catalogue. Replace with the real calibers, colors, sizes and prices.
- * Amounts are in EUR, gross (incl. 19% MwSt).
- */
-const CALIBERS = [
-  { value: "9mm Luger", surcharge: 0 },
-  { value: ".45 ACP", surcharge: 0 },
-  { value: ".223 Rem", surcharge: 3 },
-  { value: ".308 Win", surcharge: 3 },
-];
-const SIZES = [
-  { value: "25 Schuss", price: 9.9 },
-  { value: "50 Schuss", price: 12.9 },
-  { value: "100 Schuss", price: 17.9 },
-];
-const COLORS = ["Schwarz", "Oliv", "Sand", "Rot"];
-
-/**
  * Production time tiers by total number of boxes in a cart. Stored on the
  * store's metadata as a JSON string so it can be edited in the admin.
  * The last tier has no max and applies to everything above.
@@ -47,9 +26,6 @@ const PRODUCTION_TIERS = [
   { max: 5, min_days: 4, max_days: 6 },
   { max: null, min_days: 7, max_days: 10 },
 ];
-
-const toSkuPart = (value: string) =>
-  value.toUpperCase().replace(/[^A-Z0-9]+/g, "");
 
 export default async function initial_data_seed({
   container,
@@ -266,90 +242,5 @@ export default async function initial_data_seed({
     },
   });
   logger.info("Finished seeding stock location data.");
-
-  logger.info("Seeding product data...");
-
-  const { result: categoryResult } = await createProductCategoriesWorkflow(
-    container
-  ).run({
-    input: {
-      product_categories: [
-        {
-          name: "Munitionsboxen",
-          handle: "munitionsboxen",
-          is_active: true,
-        },
-      ],
-    },
-  });
-
-  const { result: productOptionsResult } = await createProductOptionsWorkflow(
-    container
-  ).run({
-    input: {
-      product_options: [
-        {
-          title: "Kaliber",
-          values: CALIBERS.map((caliber) => caliber.value),
-        },
-        {
-          title: "Größe",
-          values: SIZES.map((size) => size.value),
-        },
-        {
-          title: "Farbe",
-          values: COLORS,
-        },
-      ],
-    },
-  });
-
-  // Every combination of caliber x size x color. Printed on demand, so no
-  // inventory is tracked and every variant can always be ordered.
-  const variants = CALIBERS.flatMap((caliber) =>
-    SIZES.flatMap((size) =>
-      COLORS.map((color) => ({
-        title: `${caliber.value} / ${size.value} / ${color}`,
-        sku: `PB-${toSkuPart(caliber.value)}-${toSkuPart(size.value)}-${toSkuPart(color)}`,
-        manage_inventory: false,
-        options: {
-          Kaliber: caliber.value,
-          "Größe": size.value,
-          Farbe: color,
-        },
-        prices: [
-          {
-            amount: Math.round((size.price + caliber.surcharge) * 100) / 100,
-            currency_code: "eur",
-          },
-        ],
-      }))
-    )
-  );
-
-  await createProductsWorkflow(container).run({
-    input: {
-      products: [
-        {
-          title: "Patronenbox",
-          subtitle: "3D-gedruckt nach Bestellung",
-          description:
-            "Stabile Munitionsbox mit Klappdeckel, passgenau für dein Kaliber. Jede Box wird nach deiner Bestellung in der gewählten Farbe gedruckt.",
-          handle: "patronenbox",
-          category_ids: [categoryResult[0].id],
-          weight: 150,
-          status: ProductStatus.PUBLISHED,
-          shipping_profile_id: shippingProfile.id,
-          options: productOptionsResult.map((option) => ({ id: option.id })),
-          variants,
-          sales_channels: [
-            {
-              id: defaultSalesChannel.id,
-            },
-          ],
-        },
-      ],
-    },
-  });
-  logger.info(`Finished seeding product data (${variants.length} variants).`);
+  // Categories and products: see product-catalog.ts
 }

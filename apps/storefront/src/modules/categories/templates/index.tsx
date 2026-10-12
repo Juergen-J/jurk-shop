@@ -88,7 +88,10 @@ export default function CategoryTemplate({
           <PaginatedProducts
             sortBy={sort}
             page={pageNumber}
-            categoryId={category.id}
+            categoryIds={[
+              category.id,
+              ...(category.category_children ?? []).map((c) => c.id),
+            ]}
             countryCode={countryCode}
             optionValueIds={optionValueIds}
           />

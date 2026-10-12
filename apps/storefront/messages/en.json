@@ -68,7 +68,8 @@
       "weight": "Weight",
       "origin": "Origin",
       "originDefault": "Made in Germany",
-      "dimensions": "Dimensions"
+      "dimensions": "Dimensions",
+      "weightValue": "approx. {grams} g"
     },
     "shipping": {
       "madeToOrderTitle": "Printed to order",
@@ -78,7 +79,9 @@
       "returnsTitle": "Right of withdrawal",
       "returnsText": "You have a 14-day right of withdrawal. See our <policy>cancellation policy</policy> for details."
     },
-    "vatNoticeSmallBusiness": "Final price plus shipping · no VAT charged (§ 19 UStG)"
+    "vatNoticeSmallBusiness": "Final price plus shipping · no VAT charged (§ 19 UStG)",
+    "aiImagesBadge": "AI-edited",
+    "aiImagesNote": "The product photos were edited with AI (e.g. background and lighting). The shape and color of the box match the original."
   },
   "cart": {
     "title": "Cart",

@@ -29,6 +29,14 @@ const optionsAsKeymap = (
   }, {})
 }
 
+// Shared options carry metadata.rank ("Ausführung" before "Farbe").
+const sortOptions = (options: HttpTypes.StoreProduct["options"]) =>
+  [...(options ?? [])].sort(
+    (a, b) =>
+      Number(a.metadata?.rank ?? Infinity) -
+      Number(b.metadata?.rank ?? Infinity)
+  )
+
 export default function ProductActions({
   product,
   disabled,
@@ -143,7 +151,7 @@ export default function ProductActions({
         <div>
           {(product.variants?.length ?? 0) > 1 && (
             <div className="flex flex-col gap-y-4">
-              {(product.options || []).map((option) => {
+              {sortOptions(product.options).map((option) => {
                 return (
                   <div key={option.id}>
                     <OptionSelect

@@ -26,9 +26,14 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 }) => {
   const t = useTranslations("product")
   const id = useId()
-  const values = (option.values ?? [])
+  // Ranked values (set in the admin) first, in rank order.
+  const values = [...(option.values ?? [])]
+    .sort(
+      (a, b) =>
+        (a.rank ?? Infinity) - (b.rank ?? Infinity) ||
+        collator.compare(a.value, b.value)
+    )
     .map((v) => v.value)
-    .sort((a, b) => collator.compare(a, b))
 
   return (
     <div className="flex flex-col gap-y-2">

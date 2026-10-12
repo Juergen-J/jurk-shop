@@ -6,32 +6,19 @@ import {
 } from "@medusajs/medusa/core-flows";
 
 /**
- * The catalogue is written in German. This adds the English translations and
- * enables de-DE and en-US on the store. New products are translated in the
- * admin afterwards.
+ * The shop is written in German. This enables de-DE and en-US on the store
+ * and adds English translations for the base data. Products are translated by
+ * the product-catalog script, or in the admin.
  */
 const LOCALE = "en-US";
 
-const PRODUCTS: Record<string, Record<string, string>> = {
-  patronenbox: {
-    title: "Ammo Box",
-    subtitle: "3D printed to order",
-    description:
-      "Sturdy ammo box with a hinged lid, made to fit your caliber. Every box is printed in your chosen color after you order.",
-  },
-};
 const CATEGORIES: Record<string, string> = {
   munitionsboxen: "Ammo Boxes",
 };
 const OPTIONS: Record<string, string> = {
-  Kaliber: "Caliber",
-  "Größe": "Size",
   Farbe: "Color",
 };
 const OPTION_VALUES: Record<string, string> = {
-  "25 Schuss": "25 rounds",
-  "50 Schuss": "50 rounds",
-  "100 Schuss": "100 rounds",
   Schwarz: "Black",
   Oliv: "Olive",
   Sand: "Sand",
@@ -59,15 +46,14 @@ export default async function translations_en({
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
   const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
+  // Other migration scripts (e.g. the product catalogue) add their own
+  // translations, so only skip records that are translated already.
   const { data: existing } = await query.graph({
     entity: "translation",
-    fields: ["id"],
+    fields: ["reference_id"],
     filters: { locale_code: LOCALE },
   });
-  if (existing.length) {
-    logger.info(`${LOCALE} translations already exist, skipping.`);
-    return;
-  }
+  const translated = new Set(existing.map((t) => t.reference_id));
 
   const { data: stores } = await query.graph({
     entity: "store",
@@ -89,7 +75,7 @@ export default async function translations_en({
     reference_id: string,
     fields: Record<string, string> | undefined
   ) => {
-    if (fields) {
+    if (fields && !translated.has(reference_id)) {
       translations.push({
         reference,
         reference_id,
@@ -98,14 +84,6 @@ export default async function translations_en({
       });
     }
   };
-
-  const { data: products } = await query.graph({
-    entity: "product",
-    fields: ["id", "handle"],
-  });
-  products.forEach((product) =>
-    add("product", product.id, PRODUCTS[product.handle])
-  );
 
   const { data: categories } = await query.graph({
     entity: "product_category",
@@ -148,9 +126,11 @@ export default async function translations_en({
     add("shipping_option_type", type.id, SHIPPING_OPTION_TYPES[type.code])
   );
 
-  await createTranslationsWorkflow(container).run({
-    input: { translations },
-  });
+  if (translations.length) {
+    await createTranslationsWorkflow(container).run({
+      input: { translations },
+    });
+  }
 
   logger.info(`Created ${translations.length} ${LOCALE} translations.`);
 }

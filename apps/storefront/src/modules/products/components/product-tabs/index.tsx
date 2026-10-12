@@ -45,8 +45,38 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
   )
 }
 
+/**
+ * Weight per size ("Ausführung", the option with the lowest metadata.rank),
+ * falling back to the product weight.
+ */
+const variantWeights = (product: HttpTypes.StoreProduct) => {
+  const sizeOption = [...(product.options ?? [])].sort(
+    (a, b) =>
+      Number(a.metadata?.rank ?? Infinity) -
+      Number(b.metadata?.rank ?? Infinity)
+  )[0]
+  const weights = new Map<string, number>()
+  ;(product.variants ?? []).forEach((variant) => {
+    const size = variant.options?.find((o) => o.option_id === sizeOption?.id)
+    if (variant.weight && size?.value && !weights.has(size.value)) {
+      weights.set(size.value, variant.weight)
+    }
+  })
+  if (!weights.size && product.weight) {
+    return [{ label: "", weight: product.weight }]
+  }
+  const distinct = new Set(weights.values())
+  if (distinct.size === 1) {
+    return [{ label: "", weight: Array.from(distinct)[0] }]
+  }
+  return Array.from(weights, ([label, weight]) => ({ label, weight })).sort(
+    (a, b) => a.weight - b.weight
+  )
+}
+
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   const t = useTranslations("product.details")
+  const weights = variantWeights(product)
 
   return (
     <div className="text-small-regular py-6">
@@ -57,7 +87,19 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
         </div>
         <div>
           <span className="font-semibold">{t("weight")}</span>
-          <p>{product.weight ? `ca. ${product.weight} g` : "-"}</p>
+          {weights.length > 1 ? (
+            weights.map(({ label, weight }) => (
+              <p key={label}>
+                {label}: {t("weightValue", { grams: weight })}
+              </p>
+            ))
+          ) : (
+            <p>
+              {weights.length
+                ? t("weightValue", { grams: weights[0].weight })
+                : "-"}
+            </p>
+          )}
         </div>
         <div>
           <span className="font-semibold">{t("origin")}</span>

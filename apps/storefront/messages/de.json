@@ -68,7 +68,8 @@
       "weight": "Gewicht",
       "origin": "Herkunft",
       "originDefault": "Hergestellt in Deutschland",
-      "dimensions": "Maße"
+      "dimensions": "Maße",
+      "weightValue": "ca. {grams} g"
     },
     "shipping": {
       "madeToOrderTitle": "Gedruckt nach Bestellung",
@@ -78,7 +79,9 @@
       "returnsTitle": "Widerrufsrecht",
       "returnsText": "Du hast ein 14-tägiges Widerrufsrecht. Details findest du in unserer <policy>Widerrufsbelehrung</policy>."
     },
-    "vatNoticeSmallBusiness": "Endpreis zzgl. Versand · gemäß § 19 UStG ohne Umsatzsteuer"
+    "vatNoticeSmallBusiness": "Endpreis zzgl. Versand · gemäß § 19 UStG ohne Umsatzsteuer",
+    "aiImagesBadge": "KI-bearbeitet",
+    "aiImagesNote": "Die Produktfotos wurden mit KI bearbeitet (z. B. Hintergrund und Licht). Form und Farbe der Box entsprechen dem Original."
   },
   "cart": {
     "title": "Warenkorb",
