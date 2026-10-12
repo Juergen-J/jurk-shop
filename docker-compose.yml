@@ -1,3 +1,9 @@
+# Local stack.
+#   Databases only (for `pnpm dev`):   docker compose up -d
+#   Whole shop in Docker:              docker compose --profile app up -d --build
+#     storefront http://localhost:8000, admin http://localhost:9000/app
+# The storefront needs the publishable API key at build time: set
+# STOREFRONT_PUBLISHABLE_KEY in a root .env file (see .env.docker.example).
 services:
   postgres:
     image: postgres:17-alpine
@@ -9,11 +15,66 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medusa -d jurk_shop"]
+      interval: 5s
+      retries: 10
 
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
 
+  backend:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgres://medusa:medusa@postgres:5432/jurk_shop?sslmode=disable
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: local-docker-jwt-secret
+      COOKIE_SECRET: local-docker-cookie-secret
+      STORE_CORS: http://localhost:8000
+      ADMIN_CORS: http://localhost:9000
+      AUTH_CORS: http://localhost:8000,http://localhost:9000
+      STOREFRONT_URL: http://localhost:8000
+      # Allows admin login over plain http://localhost (never set in production)
+      COOKIE_INSECURE: "true"
+      # No SMTP locally: emails are written to apps/backend/.emails
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./apps/backend/.emails:/app/.emails
+      - backend-static:/app/static
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9000/health || exit 1"]
+      interval: 10s
+      start_period: 60s
+      retries: 10
+
+  storefront:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: apps/storefront/Dockerfile
+      args:
+        # Server-side requests go container to container.
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://backend:9000
+        NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${STOREFRONT_PUBLISHABLE_KEY:?set STOREFRONT_PUBLISHABLE_KEY in .env}
+        NEXT_PUBLIC_BASE_URL: http://localhost:8000
+        NEXT_PUBLIC_DEFAULT_REGION: de
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
 volumes:
   postgres-data:
+  backend-static:

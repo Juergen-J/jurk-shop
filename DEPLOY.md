@@ -24,6 +24,9 @@ Deploy the **backend first**: the storefront needs its publishable API key.
     (initial store setup, § 19 UStG tax rate, English translations). They are
     idempotent, so redeploys are safe.
 - Healthcheck path: `/health`
+- If migrations fail with "Could not connect to the database ... timed out":
+  in production Medusa connects with SSL to every host except localhost. If
+  the database has no SSL, append `?sslmode=disable` to `DATABASE_URL`.
 
 Variables:
 
@@ -95,6 +98,14 @@ NEXT_PUBLIC_FILE_HOSTNAME=images.jurk.pro
    Cloudflare show.
 6. Place a test order and submit a test withdrawal (Vertrag widerrufen) to
    check both emails.
+
+## Local Docker stack
+
+`docker compose --profile app up -d --build` runs the production images of
+backend and storefront next to Postgres and Redis (storefront
+http://localhost:8000, admin http://localhost:9000/app). It needs
+`STOREFRONT_PUBLISHABLE_KEY` in a root `.env` (see `.env.docker.example`).
+Stop `pnpm dev` first, both use ports 8000 and 9000.
 
 ## Before going live
 

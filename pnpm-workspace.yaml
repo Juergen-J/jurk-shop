@@ -1,2 +1,10 @@
 packages:
   - "apps/*"
+minimumReleaseAgeExclude:
+  - "@pnpm/exe@10.34.7"
+  - "@pnpm/linux-arm64@10.34.7"
+  - "@pnpm/linux-x64@10.34.7"
+  - "@pnpm/macos-arm64@10.34.7"
+  - "@pnpm/macos-x64@10.34.7"
+  - "@pnpm/win-arm64@10.34.7"
+  - "@pnpm/win-x64@10.34.7"

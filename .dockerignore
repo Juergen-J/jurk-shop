@@ -1,0 +1,17 @@
+# Built inside the images
+**/node_modules
+**/.next
+**/.medusa
+**/.turbo
+**/dist
+**/*.tsbuildinfo
+
+# Secrets and local data
+**/.env
+**/.env.*
+!**/.env.template
+**/.emails
+**/static
+
+.git
+**/.DS_Store

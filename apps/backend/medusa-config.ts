@@ -81,6 +81,12 @@ module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     redisUrl: REDIS_URL,
+    // Production cookies are Secure/SameSite=None and are rejected on plain
+    // http://localhost. Only the local Docker stack sets COOKIE_INSECURE.
+    cookieOptions:
+      process.env.COOKIE_INSECURE === "true"
+        ? { sameSite: "lax", secure: false }
+        : undefined,
     http: {
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,
