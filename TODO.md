@@ -33,3 +33,12 @@
       EMAIL_REPLY_TO and MEDUSA_BACKEND_URL on Railway (see DEPLOY.md).
 - [ ] Datenschutz: name the providers (Railway, Cloudflare R2, Resend).
 - [ ] Test order on production: order, emails, bank details.
+
+## Later (if the shop gets enough orders)
+- [ ] Lexware Office integration (needs the XL plan for the Public API):
+      invoice with a new contact per customer on order (`vatfree`, 14 days),
+      PDF attached to the order confirmation, invoice number as payment
+      reference, `payment.changed` webhook marks the order as paid (sends
+      "Zahlung eingegangen"), credit notes for withdrawals. Test with drafts
+      only (finalized invoices cannot be deleted); `LEXWARE_FINALIZE=true`
+      on production.
