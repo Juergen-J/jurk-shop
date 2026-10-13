@@ -9,6 +9,9 @@ import path from "node:path"
 import nodemailer, { Transporter } from "nodemailer"
 
 type Options = {
+  /** Resend API key: sends over HTTPS (Railway blocks SMTP below the Pro plan). */
+  resend_api_key?: string
+  reply_to?: string
   host?: string
   port?: number
   secure?: boolean
@@ -24,8 +27,9 @@ type InjectedDependencies = {
 }
 
 /**
- * Sends emails over SMTP. Without SMTP_HOST (local development) emails are
- * not sent but written to `preview_dir` so they can be opened in a browser.
+ * Sends emails through the Resend API (RESEND_API_KEY) or over SMTP
+ * (SMTP_HOST). Without either (local development) emails are not sent but
+ * written to `preview_dir` so they can be opened in a browser.
  */
 class SmtpNotificationProviderService extends AbstractNotificationProviderService {
   static identifier = "smtp"
@@ -73,6 +77,10 @@ class SmtpNotificationProviderService extends AbstractNotificationProviderServic
       )
     }
 
+    if (this.options_.resend_api_key) {
+      return this.sendWithResend(from, to, content, attachments)
+    }
+
     if (!this.transporter_) {
       return this.writePreview(notification.template, to, content.subject, content.html)
     }
@@ -80,6 +88,7 @@ class SmtpNotificationProviderService extends AbstractNotificationProviderServic
     const info = await this.transporter_.sendMail({
       from,
       to,
+      replyTo: this.options_.reply_to,
       subject: content.subject,
       html: content.html,
       text: content.text,
@@ -92,6 +101,45 @@ class SmtpNotificationProviderService extends AbstractNotificationProviderServic
     })
 
     return { id: info.messageId }
+  }
+
+  private async sendWithResend(
+    from: string,
+    to: string,
+    content: NonNullable<ProviderSendNotificationDTO["content"]>,
+    attachments: ProviderSendNotificationDTO["attachments"]
+  ): Promise<ProviderSendNotificationResultsDTO> {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.options_.resend_api_key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: content.subject,
+        html: content.html,
+        text: content.text,
+        ...(this.options_.reply_to ? { reply_to: this.options_.reply_to } : {}),
+        ...(attachments?.length
+          ? {
+              attachments: attachments.map((a) => ({
+                filename: a.filename,
+                content: a.content,
+              })),
+            }
+          : {}),
+      }),
+    })
+    const body = (await res.json().catch(() => ({}))) as { id?: string; message?: string }
+    if (!res.ok) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Resend could not send "${content.subject}" to ${to}: ${res.status} ${body.message ?? ""}`
+      )
+    }
+    return { id: body.id }
   }
 
   private async writePreview(
@@ -110,7 +158,7 @@ class SmtpNotificationProviderService extends AbstractNotificationProviderServic
     await fs.writeFile(file, html)
 
     this.logger_.info(
-      `[email] SMTP not configured, not sent. To: ${to}, subject: "${subject}". Preview: ${file}`
+      `[email] No RESEND_API_KEY or SMTP_HOST, not sent. To: ${to}, subject: "${subject}". Preview: ${file}`
     )
 
     return { id: file }

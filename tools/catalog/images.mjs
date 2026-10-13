@@ -9,7 +9,8 @@
  *
  * Options:
  *   --only 1986813,2612021   only these MakerWorld model ids
- *   --force                  redo images that already exist
+ *   --force                  redo images that already exist; upload again even
+ *                            if the product already has these photos
  *
  * The models come from catalog/catalog.csv: every MakerWorld model of a row
  * with foto=ja, once per product. `generate` needs
@@ -19,6 +20,7 @@
  * along as a style reference for the scene.
  */
 import { execFile } from "node:child_process"
+import { createHash } from "node:crypto"
 import { existsSync } from "node:fs"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join, relative } from "node:path"
@@ -215,6 +217,7 @@ const upload = async (selected) => {
     }
   }
 
+  let skipped = 0
   for (const [handle, ids] of byProduct) {
     const { products } = await admin(
       `/admin/products?handle=${handle}&fields=id,metadata`
@@ -223,10 +226,20 @@ const upload = async (selected) => {
       console.error(`${handle}: product not found`)
       continue
     }
-    const form = new FormData()
-    for (const id of ids) {
-      form.append("files", new Blob([await readFile(aiPath(id))], { type: "image/jpeg" }), `${handle}-${id}.jpg`)
+    // The product remembers which photos it got (metadata.images_hash), so
+    // repeated runs only upload products whose photos changed.
+    const images = await Promise.all(ids.map((id) => readFile(aiPath(id))))
+    const hash = createHash("sha1")
+    ids.forEach((id, i) => hash.update(id).update(images[i]))
+    const imagesHash = hash.digest("hex")
+    if (!force && products[0].metadata?.images_hash === imagesHash) {
+      skipped++
+      continue
     }
+    const form = new FormData()
+    ids.forEach((id, i) => {
+      form.append("files", new Blob([images[i]], { type: "image/jpeg" }), `${handle}-${id}.jpg`)
+    })
     const { files } = await admin("/admin/uploads", { method: "POST", body: form })
     const product = products[0]
     await admin(`/admin/products/${product.id}`, {
@@ -234,11 +247,12 @@ const upload = async (selected) => {
       body: {
         images: files.map((f) => ({ url: f.url })),
         thumbnail: files[0].url,
-        metadata: { ...product.metadata, ai_images: true },
+        metadata: { ...product.metadata, ai_images: true, images_hash: imagesHash },
       },
     })
     console.log(`${handle}: ${files.length} image(s)`)
   }
+  console.log(`photos: ${byProduct.size - skipped} product(s) uploaded, ${skipped} unchanged`)
 }
 
 const commands = { download, generate, review, upload }

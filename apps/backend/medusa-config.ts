@@ -117,11 +117,16 @@ module.exports = defineConfig({
             id: "smtp",
             options: {
               channels: ["email"],
+              resend_api_key: process.env.RESEND_API_KEY,
+              reply_to: process.env.EMAIL_REPLY_TO,
               host: process.env.SMTP_HOST,
               port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined,
               user: process.env.SMTP_USER,
               pass: process.env.SMTP_PASS,
-              from: process.env.EMAIL_FROM || "JURK.PRO Shop <info@jurk.pro>",
+              // Railway may keep quotes typed around the value.
+              from:
+                process.env.EMAIL_FROM?.replace(/^["']|["']$/g, "") ||
+                "JURK.PRO Shop <info@jurk.pro>",
             },
           },
         ],

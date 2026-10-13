@@ -24,11 +24,12 @@
       6mm Creedmoor, .22 Creedmoor, .45 ACP USA Edition.
 
 ## Go-live
-- [ ] Production catalog: create a Secret API Key in the admin, then run
-      `import.mjs` and `images.mjs upload` against https://api.jurk.pro (see
-      DEPLOY.md).
+- [ ] Production catalog: Secret API Key into the root .env as
+      PROD_MEDUSA_ADMIN_KEY, then `pnpm catalog:sync --prod --update-texts`
+      (see DEPLOY.md).
 - [ ] Storefront domain shop.jurk.pro (Railway custom domain + Cloudflare
       CNAME/TXT, CORS variables on the backend).
-- [ ] SMTP for order emails via Resend (send.jurk.pro is verified there).
+- [ ] Emails via Resend: RESEND_API_KEY, EMAIL_FROM (…@jurk.pro),
+      EMAIL_REPLY_TO and MEDUSA_BACKEND_URL on Railway (see DEPLOY.md).
 - [ ] Datenschutz: name the providers (Railway, Cloudflare R2, Resend).
 - [ ] Test order on production: order, emails, bank details.

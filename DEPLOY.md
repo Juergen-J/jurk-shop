@@ -43,14 +43,16 @@ STORE_CORS=https://shop.jurk.pro
 ADMIN_CORS=https://api.jurk.pro
 AUTH_CORS=https://shop.jurk.pro,https://api.jurk.pro
 STOREFRONT_URL=https://shop.jurk.pro
+# Public backend URL, used in the admin password reset link
+MEDUSA_BACKEND_URL=https://api.jurk.pro
 CONTACT_EMAIL=info@jurk.pro
 
-# Email (order confirmations, withdrawals)
-SMTP_HOST=
-SMTP_PORT=587
-SMTP_USER=
-SMTP_PASS=
+# Email (order confirmations, withdrawals). Railway blocks SMTP below the
+# Pro plan, so emails go through the Resend API. The domain verified in
+# Resend is jurk.pro (send.jurk.pro is only its bounce address).
+RESEND_API_KEY=re_...
 EMAIL_FROM="JURK.PRO Shop <info@jurk.pro>"
+EMAIL_REPLY_TO=info@jurk.pro
 
 # Cloudflare R2 (product images)
 S3_FILE_URL=https://images.jurk.pro
@@ -99,15 +101,18 @@ NEXT_PUBLIC_FILE_HOSTNAME=images.jurk.pro
    `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` of the storefront and deploy it.
 3. Admin → Settings → Store: bank details, notification email, free shipping,
    volume discounts, production times.
-4. Products: Admin → Settings → Secret API Keys → create a key, then from
-   your machine (the key stays out of git and chat):
-   ```bash
-   MEDUSA_URL=https://api.jurk.pro MEDUSA_ADMIN_KEY=sk_... node tools/catalog/import.mjs
-   MEDUSA_URL=https://api.jurk.pro MEDUSA_ADMIN_KEY=sk_... node tools/catalog/images.mjs upload
+4. Products: Admin → Settings → Secret API Keys → create a key and add it
+   to the root `.env` on your machine (never commit it):
    ```
-   `catalog/catalog.csv` is the source for products and sizes; run the import
-   again after changing it. Photos are made with `tools/catalog/images.mjs`
-   (download, generate, review) before the upload.
+   PROD_MEDUSA_URL=https://api.jurk.pro
+   PROD_MEDUSA_ADMIN_KEY=sk_...
+   ```
+   Then `pnpm catalog:sync --prod --dry-run` shows what would change and
+   `pnpm catalog:sync --prod` imports `catalog/catalog.csv` and uploads the
+   photos from `catalog/images/ai` (only products whose photos changed). Run
+   it again after every catalog change; once for the first sync also with
+   `--update-texts`. Photos are made with `tools/catalog/images.mjs`
+   (download, generate, review).
 5. DNS: CNAME `shop`, `api` (and `images` for R2) to the targets Railway /
    Cloudflare show.
 6. Place a test order and submit a test withdrawal (Vertrag widerrufen) to
