@@ -113,6 +113,35 @@ const Payment = ({
     setError(null)
   }, [isOpen])
 
+  // Medusa drops the payment session whenever the cart total changes, e.g.
+  // when a promotion code is applied on the review step. Re-create it for
+  // payment methods without extra details (bank transfer), otherwise send the
+  // customer back to the payment step.
+  const sessionLost =
+    searchParams.get("step") === "review" &&
+    !activeSession &&
+    !paidByGiftcard &&
+    (cart.shipping_methods?.length ?? 0) > 0
+
+  useEffect(() => {
+    if (!sessionLost) {
+      return
+    }
+    const backToPayment = () =>
+      router.push(pathname + "?" + createQueryString("step", "payment"), {
+        scroll: false,
+      })
+    if (selectedPaymentMethod && !isStripeLike(selectedPaymentMethod)) {
+      initiatePaymentSession(cart, { provider_id: selectedPaymentMethod }).catch(
+        backToPayment
+      )
+    } else {
+      backToPayment()
+    }
+    // Only react to the session going missing, not to every cart refresh.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionLost])
+
   return (
     <div className="bg-white">
       <div className="flex flex-row items-center justify-between mb-6">

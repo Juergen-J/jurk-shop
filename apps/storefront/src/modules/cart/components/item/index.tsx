@@ -44,8 +44,18 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const maxQuantity = 20
 
   return (
-    <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
+    <Table.Row
+      className={clx("w-full", {
+        "grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-x-3 gap-y-2 py-4 small:table-row small:py-0":
+          type === "full",
+      })}
+      data-testid="product-row"
+    >
+      <Table.Cell
+        className={clx("!pl-0 p-4 w-24", {
+          "!p-0 small:!p-4 small:!pl-0 row-span-2 w-auto small:w-24": type === "full",
+        })}
+      >
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
           className={clx("flex", {
@@ -61,7 +71,11 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </LocalizedClientLink>
       </Table.Cell>
 
-      <Table.Cell className="text-left">
+      <Table.Cell
+        className={clx("text-left", {
+          "!p-0 small:!p-4 col-start-2 min-w-0 break-words": type === "full",
+        })}
+      >
         <Text
           className="txt-medium-plus text-ui-fg-base"
           data-testid="product-title"
@@ -76,7 +90,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       </Table.Cell>
 
       {type === "full" && (
-        <Table.Cell>
+        <Table.Cell className="!p-0 small:!p-4 col-start-2 row-start-2">
           <div className="flex gap-2 items-center w-28">
             <DeleteButton id={item.id} data-testid="product-delete-button" />
             <CartItemSelect
@@ -113,7 +127,11 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         </Table.Cell>
       )}
 
-      <Table.Cell className="!pr-0">
+      <Table.Cell
+        className={clx("!pr-0", {
+          "!p-0 small:!p-4 small:!pr-0 col-start-3 row-start-1 text-right": type === "full",
+        })}
+      >
         <span
           className={clx("!pr-0", {
             "flex flex-col items-end h-full justify-center": type === "preview",

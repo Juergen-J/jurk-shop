@@ -25,7 +25,7 @@ const SkeletonCartPage = () => {
                 <div className="w-20 h-12 bg-gray-200 animate-pulse" />
               </div>
               <Table>
-                <Table.Header className="border-t-0">
+                <Table.Header className="hidden small:table-header-group border-t-0">
                   <Table.Row>
                     <Table.HeaderCell className="!pl-0">
                       <div className="w-10 h-6 bg-gray-200 animate-pulse" />

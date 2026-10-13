@@ -18,8 +18,10 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
       <div className="pb-3 flex items-center">
         <Heading className="text-[2rem] leading-[2.75rem]">{t("title")}</Heading>
       </div>
-      <Table>
-        <Table.Header className="border-t-0">
+      {/* Below `small` every line is a card (grid) instead of a table row, so
+          the cart fits narrow phones like the iPhone SE. */}
+      <Table className="block small:table">
+        <Table.Header className="hidden small:table-header-group border-t-0">
           <Table.Row className="text-ui-fg-subtle txt-medium-plus">
             <Table.HeaderCell className="!pl-0">{t("item")}</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
@@ -32,7 +34,7 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body className="block small:table-row-group">
           {items
             ? items
                 .sort((a, b) => {
