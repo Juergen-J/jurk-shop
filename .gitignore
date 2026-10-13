@@ -60,3 +60,6 @@ Thumbs.db
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# Product photos (originals from MakerWorld, AI edits)
+catalog/images/
