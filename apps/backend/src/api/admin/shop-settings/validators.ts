@@ -7,6 +7,7 @@ export const PostAdminShopSettings = z.object({
     bic: z.string().trim(),
     name: z.string().trim(),
   }),
+  invoice_separately: z.boolean().default(true),
   order_notification_email: z.union([z.literal(""), z.string().trim().email()]),
   free_shipping_threshold: z.number().positive().nullable(),
   volume_discounts: z

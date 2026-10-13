@@ -21,6 +21,12 @@ export type VolumeDiscount = {
 
 export type ShopSettings = {
   bank: BankDetails
+  /**
+   * The invoice (with bank details and QR code) is sent separately, e.g. from
+   * Lexware, and customers pay with the invoice number as reference. When
+   * false, customers pay right away with the order number.
+   */
+  invoice_separately: boolean
   order_notification_email: string
   free_shipping_threshold: number | null
   volume_discounts: VolumeDiscount[]
@@ -40,6 +46,7 @@ export const VAT_RATE = COMPANY.smallBusiness ? 0 : 0.19
 
 export const DEFAULT_SHOP_SETTINGS: ShopSettings = {
   bank: { holder: "", iban: "", bic: "", name: "" },
+  invoice_separately: true,
   order_notification_email: "",
   free_shipping_threshold: null,
   volume_discounts: [],
@@ -83,6 +90,7 @@ export const parseShopSettings = (raw: unknown): ShopSettings => {
       bic: toText(bank.bic),
       name: toText(bank.name),
     },
+    invoice_separately: parsed.invoice_separately !== false,
     order_notification_email: toText(parsed.order_notification_email),
     free_shipping_threshold: threshold !== null && threshold > 0 ? threshold : null,
     volume_discounts: sortVolumeDiscounts(
@@ -106,6 +114,7 @@ export const parseShopSettings = (raw: unknown): ShopSettings => {
 /** The part of the settings customers may see. */
 export const toPublicShopSettings = (settings: ShopSettings) => ({
   bank: settings.bank,
+  invoice_separately: settings.invoice_separately,
   free_shipping_threshold: settings.free_shipping_threshold,
   volume_discounts: settings.volume_discounts,
 })

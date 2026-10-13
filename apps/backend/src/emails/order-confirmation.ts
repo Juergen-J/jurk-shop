@@ -31,6 +31,8 @@ export type EmailOrder = {
 }
 
 export type OrderEmailContext = {
+  /** Invoice comes separately (Lexware): no bank details, pay with invoice number */
+  invoiceSeparately: boolean
   order: EmailOrder
   locale: EmailLocale
   bank: BankDetails
@@ -130,6 +132,16 @@ const bankBox = (ctx: OrderEmailContext) => {
   const t = messages[ctx.locale]
   const { bank, order } = ctx
   const amount = money(order.total)
+
+  if (ctx.invoiceSeparately) {
+    return `
+  <tr><td style="padding:24px 32px 0;">
+    <div style="border:1px solid #c7d7ff;background:#f3f6ff;border-radius:12px;padding:16px 20px;">
+      <div style="font-weight:600;font-size:15px;color:#18181b;margin-bottom:6px;">${escape(t.invoiceTitle)}</div>
+      <div style="color:#52525b;">${escape(t.invoiceText(amount))}</div>
+    </div>
+  </td></tr>`
+  }
 
   const rows = bank.iban
     ? [

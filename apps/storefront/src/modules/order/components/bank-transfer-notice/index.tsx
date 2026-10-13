@@ -15,11 +15,25 @@ const BankTransferNotice = async ({ order }: { order: HttpTypes.StoreOrder }) =>
 
   const t = await getTranslations("bankTransfer")
   // Bank details are edited in the admin (Settings > Store).
-  const { bank: BANK } = await getShopSettings()
+  const { bank: BANK, invoice_separately } = await getShopSettings()
   const amount = convertToLocale({
     amount: order.total,
     currency_code: order.currency_code,
   })
+
+  // The invoice (bank details, QR code) is sent separately, e.g. from Lexware.
+  if (invoice_separately) {
+    return (
+      <div
+        className="rounded-2xl border border-brand/30 bg-brand/5 p-6 flex flex-col gap-y-3"
+        data-testid="bank-transfer-notice"
+      >
+        <h2 className="txt-large-plus text-ui-fg-base">{t("invoiceTitle")}</h2>
+        <p className="txt-medium text-ui-fg-subtle">{t("invoiceText", { amount })}</p>
+        <p className="txt-small text-ui-fg-muted">{t("productionStart")}</p>
+      </div>
+    )
+  }
   const reference = t("referenceValue", { number: order.display_id ?? "" })
 
   const rows = [

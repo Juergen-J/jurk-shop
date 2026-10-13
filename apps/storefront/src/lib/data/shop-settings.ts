@@ -6,6 +6,8 @@ export type ShopSettings = {
   shipping_options: { name: string; amount: number | null }[]
   production_tiers: ProductionTier[]
   bank: { holder: string; iban: string; bic: string; name: string }
+  /** The invoice comes separately (Lexware); pay with the invoice number. */
+  invoice_separately: boolean
   free_shipping_threshold: number | null
   volume_discounts: { min_total: number; percent: number }[]
 }
@@ -15,6 +17,7 @@ const EMPTY: ShopSettings = {
   shipping_options: [],
   production_tiers: [],
   bank: { holder: "", iban: "", bic: "", name: "" },
+  invoice_separately: true,
   free_shipping_threshold: null,
   volume_discounts: [],
 }

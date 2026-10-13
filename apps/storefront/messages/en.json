@@ -164,7 +164,7 @@
       "ideal": "iDEAL",
       "bancontact": "Bancontact"
     },
-    "manualHint": "You'll receive our bank details after placing the order. We start printing as soon as your payment has arrived.",
+    "manualHint": "You'll receive all payment details by email after placing the order. We start printing as soon as your payment has arrived.",
     "manualSummary": "Bank transfer after ordering",
     "enterDetails": "Enter your payment details:",
     "loadError": "Could not load the payment methods.",
@@ -183,7 +183,9 @@
     "referenceValue": "Order {number}",
     "byEmail": "You'll receive our bank details by email shortly.",
     "productionStart": "Production starts once your payment has arrived.",
-    "textNoBank": "Please transfer {amount} and use your order number ({reference}) as the payment reference."
+    "textNoBank": "Please transfer {amount} and use your order number ({reference}) as the payment reference.",
+    "invoiceTitle": "Invoice & payment",
+    "invoiceText": "We will send you the invoice for {amount} with our bank details and a QR code for payment in a separate email shortly. Please use the invoice number as the payment reference."
   },
   "order": {
     "confirmedTitle": "Order confirmed",
@@ -241,7 +243,8 @@
     "returnsText": "As a consumer you have a 14-day right of withdrawal. See our <policy>cancellation policy</policy> (German). You can also withdraw online via <withdraw>“Withdraw from contract”</withdraw>.",
     "deliveryAreaSmallBusiness": "We deliver within Germany. Shipping costs per order:",
     "vatTitle": "VAT",
-    "vatSmallBusiness": "As a small business under § 19 UStG (German VAT Act) we do not charge VAT, so none is shown. All prices are final prices."
+    "vatSmallBusiness": "As a small business under § 19 UStG (German VAT Act) we do not charge VAT, so none is shown. All prices are final prices.",
+    "paymentTextInvoice": "We offer prepayment by bank transfer. After your order you will receive the invoice by email, with our bank details and a QR code for payment. Please use the invoice number as the payment reference."
   },
   "withdrawal": {
     "title": "Withdraw from contract",

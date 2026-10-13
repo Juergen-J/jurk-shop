@@ -21,6 +21,7 @@ type DiscountRow = { min_total: string; percent: string }
 
 type FormState = {
   bank: ShopSettings["bank"]
+  invoice_separately: boolean
   order_notification_email: string
   free_shipping_enabled: boolean
   free_shipping_threshold: string
@@ -31,6 +32,7 @@ const QUERY_KEY = ["shop-settings"]
 
 const toForm = (settings: ShopSettings): FormState => ({
   bank: settings.bank,
+  invoice_separately: settings.invoice_separately,
   order_notification_email: settings.order_notification_email,
   free_shipping_enabled: settings.free_shipping_threshold !== null,
   free_shipping_threshold:
@@ -72,6 +74,7 @@ const toSettings = (form: FormState): ShopSettings | string => {
 
   return {
     bank: form.bank,
+    invoice_separately: form.invoice_separately,
     order_notification_email: form.order_notification_email.trim(),
     free_shipping_threshold: form.free_shipping_enabled ? threshold : null,
     volume_discounts: discounts,
@@ -173,6 +176,24 @@ const ShopSettingsWidget = () => {
               />
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-y-2 px-6 py-4">
+        <Heading level="h3">Rechnung</Heading>
+        <div className="flex items-start gap-x-2">
+          <Checkbox
+            id="invoice-separately"
+            checked={form.invoice_separately}
+            onCheckedChange={(checked) =>
+              set({ invoice_separately: checked === true })
+            }
+          />
+          <Label htmlFor="invoice-separately" size="small">
+            Rechnung kommt separat (z. B. aus Lexware). Kunden zahlen mit der
+            Rechnungsnummer als Verwendungszweck; Bestätigung und Bestellseite
+            zeigen dann keine Bankverbindung.
+          </Label>
         </div>
       </div>
 

@@ -164,7 +164,7 @@
       "ideal": "iDEAL",
       "bancontact": "Bancontact"
     },
-    "manualHint": "Nach der Bestellung erhältst du unsere Bankverbindung. Sobald deine Zahlung eingegangen ist, starten wir mit dem Druck.",
+    "manualHint": "Nach der Bestellung erhältst du alle Zahlungsinformationen per E-Mail. Sobald deine Zahlung eingegangen ist, starten wir mit dem Druck.",
     "manualSummary": "Überweisung nach Bestellung",
     "enterDetails": "Zahlungsdaten eingeben:",
     "loadError": "Die Zahlungsarten konnten nicht geladen werden.",
@@ -183,7 +183,9 @@
     "referenceValue": "Bestellung {number}",
     "byEmail": "Unsere Bankverbindung erhältst du in Kürze per E-Mail.",
     "productionStart": "Die Fertigung beginnt nach Zahlungseingang.",
-    "textNoBank": "Bitte überweise {amount} und gib als Verwendungszweck deine Bestellnummer ({reference}) an."
+    "textNoBank": "Bitte überweise {amount} und gib als Verwendungszweck deine Bestellnummer ({reference}) an.",
+    "invoiceTitle": "Rechnung & Zahlung",
+    "invoiceText": "Die Rechnung über {amount} mit unserer Bankverbindung und einem QR-Code zum Bezahlen senden wir dir in Kürze in einer separaten E-Mail. Bitte überweise mit der Rechnungsnummer als Verwendungszweck."
   },
   "order": {
     "confirmedTitle": "Bestellung bestätigt",
@@ -241,7 +243,8 @@
     "returnsText": "Als Verbraucher hast du ein 14-tägiges Widerrufsrecht. Details findest du in der <policy>Widerrufsbelehrung</policy>. Widerrufen kannst du auch online über <withdraw>„Vertrag widerrufen“</withdraw>.",
     "deliveryAreaSmallBusiness": "Wir liefern innerhalb Deutschlands. Versandkosten pro Bestellung:",
     "vatTitle": "Umsatzsteuer",
-    "vatSmallBusiness": "Als Kleinunternehmer im Sinne von § 19 UStG berechnen wir keine Umsatzsteuer und weisen sie daher auch nicht aus. Alle Preise sind Endpreise."
+    "vatSmallBusiness": "Als Kleinunternehmer im Sinne von § 19 UStG berechnen wir keine Umsatzsteuer und weisen sie daher auch nicht aus. Alle Preise sind Endpreise.",
+    "paymentTextInvoice": "Wir bieten Zahlung per Vorkasse (Überweisung) an. Nach der Bestellung erhältst du die Rechnung per E-Mail, mit unserer Bankverbindung und einem QR-Code zum Bezahlen. Bitte gib als Verwendungszweck die Rechnungsnummer an."
   },
   "withdrawal": {
     "title": "Vertrag widerrufen",

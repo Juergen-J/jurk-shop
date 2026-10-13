@@ -162,6 +162,7 @@ export const buildOrderEmailsStep = createStep(
       order: emailOrder,
       locale,
       bank: settings.bank,
+      invoiceSeparately: settings.invoice_separately,
       production: estimateProduction(tiers, boxCount),
       boxCount,
       contactEmail: CONTACT_EMAIL,

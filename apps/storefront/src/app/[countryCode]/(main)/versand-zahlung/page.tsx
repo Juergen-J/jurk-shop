@@ -82,7 +82,7 @@ export default async function ShippingPaymentPage() {
         )}
 
         <h2 className="txt-xlarge-plus text-ui-fg-base mt-4">{t("paymentTitle")}</h2>
-        <p>{t("paymentText")}</p>
+        <p>{t(settings.invoice_separately ? "paymentTextInvoice" : "paymentText")}</p>
 
         {SMALL_BUSINESS && (
           <>

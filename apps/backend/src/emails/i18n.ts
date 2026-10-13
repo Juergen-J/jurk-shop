@@ -26,6 +26,8 @@ type Messages = {
   bankTitle: string
   bankText: (amount: string) => string
   bankMissing: string
+  invoiceTitle: string
+  invoiceText: (amount: string) => string
   holder: string
   iban: string
   bic: string
@@ -73,6 +75,9 @@ export const messages: Record<EmailLocale, Messages> = {
       `Bitte überweise ${amount} auf folgendes Konto. Gib als Verwendungszweck deine Bestellnummer an.`,
     bankMissing:
       "Unsere Bankverbindung senden wir dir in einer separaten E-Mail. Bitte gib als Verwendungszweck deine Bestellnummer an.",
+    invoiceTitle: "Rechnung & Zahlung",
+    invoiceText: (amount) =>
+      `Die Rechnung über ${amount} mit unserer Bankverbindung und einem QR-Code zum Bezahlen senden wir dir in Kürze in einer separaten E-Mail. Bitte überweise mit der Rechnungsnummer als Verwendungszweck.`,
     holder: "Kontoinhaber",
     iban: "IBAN",
     bic: "BIC",
@@ -121,6 +126,9 @@ export const messages: Record<EmailLocale, Messages> = {
       `Please transfer ${amount} to the account below and use your order number as the payment reference.`,
     bankMissing:
       "We will send you our bank details in a separate email. Please use your order number as the payment reference.",
+    invoiceTitle: "Invoice & payment",
+    invoiceText: (amount) =>
+      `We will send you the invoice for ${amount} with our bank details and a QR code for payment in a separate email shortly. Please use the invoice number as the payment reference.`,
     holder: "Account holder",
     iban: "IBAN",
     bic: "BIC",
