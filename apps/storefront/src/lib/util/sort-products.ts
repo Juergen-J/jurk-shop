@@ -46,5 +46,19 @@ export function sortProducts(
     })
   }
 
+  if (sortBy === "popularity") {
+    // metadata.rank from catalog.csv ("rang", 1 = most popular); unranked
+    // products follow by title, numbers in natural order (.22 before .223).
+    const collator = new Intl.Collator("de", { numeric: true })
+    const rank = (p: HttpTypes.StoreProduct) => {
+      const value = Number(p.metadata?.rank)
+      return Number.isFinite(value) && value > 0 ? value : Infinity
+    }
+    sortedProducts.sort(
+      (a, b) =>
+        rank(a) - rank(b) || collator.compare(a.title ?? "", b.title ?? "")
+    )
+  }
+
   return sortedProducts
 }

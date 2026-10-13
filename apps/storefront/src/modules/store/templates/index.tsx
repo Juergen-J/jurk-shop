@@ -37,7 +37,7 @@ const StoreTemplate = async ({
         </div>
         <Suspense key={`${q}-${pageNumber}`} fallback={<SkeletonProductGrid />}>
           <PaginatedProducts
-            sortBy="created_at"
+            sortBy="popularity"
             page={pageNumber}
             countryCode={countryCode}
             q={q}

@@ -14,6 +14,9 @@
  * Catalog products (metadata.design = BoxLoc by Layer51) that are no longer
  * in the CSV are deleted; other products are left alone.
  *
+ * The column "rang" orders products in the store (1 = most popular); it is
+ * stored as metadata.rank, products without one come last.
+ *
  * Options:
  *   --dry-run        only print what would change
  *   --update-texts   also overwrite title, subtitle and description (DE + EN)
@@ -214,6 +217,7 @@ let updated = 0
 
 for (const product of products) {
   const first = product.rows[0]
+  const productRank = first.rang ? Number(first.rang) : null
   const categoryId = categoryIds.get(CATEGORIES[first.kategorie]?.handle)
   const variants = desiredVariants(product)
   const sizes = [...new Set(product.rows.map((r) => r.ausfuehrung))]
@@ -222,7 +226,7 @@ for (const product of products) {
   colors.forEach((v) => usedColorValues.add(v))
 
   const { products: found } = await api(
-    `/admin/products?handle=${product.handle}&fields=id,title,*options,*options.values,*variants,*variants.options,*variants.prices,*categories`
+    `/admin/products?handle=${product.handle}&fields=id,title,metadata,*options,*options.values,*variants,*variants.options,*variants.prices,*categories`
   )
   const existing = found[0]
 
@@ -238,7 +242,7 @@ for (const product of products) {
         ...(categoryId ? { categories: [{ id: categoryId }] } : {}),
         ...(shippingProfileId ? { shipping_profile_id: shippingProfileId } : {}),
         ...(salesChannelId ? { sales_channels: [{ id: salesChannelId }] } : {}),
-        metadata: { design: DESIGN, ai_images: false },
+        metadata: { design: DESIGN, ai_images: false, rank: productRank },
         options: [
           { id: sizeOption.id, value_ids: sizes.map((v) => sizeOption.valueIds.get(v)) },
           { id: colorOption.id, value_ids: colors.map((v) => colorOption.valueIds.get(v)) },
@@ -322,8 +326,9 @@ for (const product of products) {
     }))
     .filter((u) => u.add.length || u.remove.length)
   const categoryChanged = categoryId && !existing.categories.some((c) => c.id === categoryId)
+  const rankChanged = (existing.metadata?.rank ?? null) !== productRank
 
-  if (!toDelete.length && !toCreate.length && !toUpdate.length && !optionUpdates.length && !categoryChanged) {
+  if (!toDelete.length && !toCreate.length && !toUpdate.length && !optionUpdates.length && !categoryChanged && !rankChanged) {
     continue
   }
   log(
@@ -370,8 +375,13 @@ for (const product of products) {
       },
     })
   }
-  if (categoryChanged) {
-    await write(`/admin/products/${existing.id}`, { body: { categories: [{ id: categoryId }] } })
+  if (categoryChanged || rankChanged) {
+    await write(`/admin/products/${existing.id}`, {
+      body: {
+        ...(categoryChanged ? { categories: [{ id: categoryId }] } : {}),
+        ...(rankChanged ? { metadata: { ...existing.metadata, rank: productRank } } : {}),
+      },
+    })
   }
   updated++
 }
