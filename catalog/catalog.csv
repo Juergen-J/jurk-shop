@@ -17,7 +17,7 @@ munitionsbox-40-sw;Kurzwaffe;Munitionsbox .40 S&W;Ammo Box .40 S&W;50 Schuss;50 
 munitionsbox-40-sw;Kurzwaffe;Munitionsbox .40 S&W;Ammo Box .40 S&W;40 Schuss (Kompakt);40 rounds (compact);3236705;ja;standard;;;
 munitionsbox-44-magnum;Kurzwaffe;Munitionsbox .44 Magnum;Ammo Box .44 Magnum;50 Schuss;50 rounds;2429989;ja;standard;;;
 munitionsbox-45-acp;Kurzwaffe;Munitionsbox .45 ACP;Ammo Box .45 ACP;50 Schuss;50 rounds;2013867;ja;standard;161;;
-munitionsbox-45-acp;Kurzwaffe;Munitionsbox .45 ACP;Ammo Box .45 ACP;USA Edition;USA Edition;3012158;ja;nach_anfrage;;;Mehrfarbig (Flagge), Farbe nach Anfrage · Anzahl Schuss prüfen
+munitionsbox-45-acp;Kurzwaffe;Munitionsbox .45 ACP;Ammo Box .45 ACP;USA Edition;USA Edition;3012158;nein;nach_anfrage;;;Mehrfarbig (Flagge), Farbe nach Anfrage · Anzahl Schuss prüfen · Foto der Vorlage zeigt 9MM, daher ohne Foto
 munitionsbox-45-colt;Kurzwaffe;Munitionsbox .45 Colt;Ammo Box .45 Colt;50 Schuss;50 rounds;2430003;ja;standard;;;
 munitionsbox-454-casull;Kurzwaffe;Munitionsbox .454 Casull;Ammo Box .454 Casull;50 Schuss;50 rounds;2430016;ja;standard;;;
 munitionsbox-10mm-auto;Kurzwaffe;Munitionsbox 10mm Auto;Ammo Box 10mm Auto;50 Schuss;50 rounds;2338363;ja;standard;;;
@@ -55,14 +55,14 @@ munitionsbox-22-creedmoor;Langwaffe;Munitionsbox .22 Creedmoor;Ammo Box .22 Cree
 munitionsbox-22-creedmoor;Langwaffe;Munitionsbox .22 Creedmoor;Ammo Box .22 Creedmoor;20 Schuss (Mini);20 rounds (mini);2924463;nein;standard;;;Modell enthält 20/25 – Insert für 20 · Foto der Vorlage zeigt 6.5 Creedmoor, daher ohne Foto
 munitionsbox-22-creedmoor;Langwaffe;Munitionsbox .22 Creedmoor;Ammo Box .22 Creedmoor;25 Schuss (Mini);25 rounds (mini);2924463;nein;standard;;;Modell enthält 20/25 – Insert für 25 · Foto der Vorlage zeigt 6.5 Creedmoor, daher ohne Foto
 munitionsbox-22-250-rem;Langwaffe;Munitionsbox .22-250 Rem;Ammo Box .22-250 Rem;50 Schuss;50 rounds;2270263;ja;standard;;;
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;50 Schuss;50 rounds;2117458;ja;standard;241;;Modell enthält 50/60 – Insert für 50
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;60 Schuss;60 rounds;2117458;ja;standard;241;;Modell enthält 50/60 – Insert für 60
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;100 Schuss;100 rounds;2269896;ja;standard;;;Modell enthält 100/152 – Insert für 100
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;152 Schuss;152 rounds;2269896;ja;standard;;;Modell enthält 100/152 – Insert für 152
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;25 Schuss (Mini);25 rounds (mini);2844244;ja;standard;;;Modell enthält 25/36 – Insert für 25
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;36 Schuss (Mini);36 rounds (mini);2844244;ja;standard;;;Modell enthält 25/36 – Insert für 36
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;10 Schuss (Tasche);10 rounds (pocket);2924417;ja;standard;;;Modell enthält 10/15 – Insert für 10
-munitionsbox-223-rem-556;Langwaffe;Munitionsbox .223 Rem / 5.56x45;Ammo Box .223 Rem / 5.56x45;15 Schuss (Tasche);15 rounds (pocket);2924417;ja;standard;;;Modell enthält 10/15 – Insert für 15
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;50 Schuss;50 rounds;2117458;nein;standard;241;;Modell enthält 50/60 – Insert für 50 · Foto der Vorlage zeigt 556, daher ohne Foto
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;60 Schuss;60 rounds;2117458;nein;standard;241;;Modell enthält 50/60 – Insert für 60 · Foto der Vorlage zeigt 556, daher ohne Foto
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;100 Schuss;100 rounds;2269896;nein;standard;;;Modell enthält 100/152 – Insert für 100 · Foto der Vorlage zeigt 556, daher ohne Foto
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;152 Schuss;152 rounds;2269896;nein;standard;;;Modell enthält 100/152 – Insert für 152 · Foto der Vorlage zeigt 556, daher ohne Foto
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;25 Schuss (Mini);25 rounds (mini);2844244;nein;standard;;;Modell enthält 25/36 – Insert für 25 · Foto der Vorlage zeigt 556, daher ohne Foto
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;36 Schuss (Mini);36 rounds (mini);2844244;nein;standard;;;Modell enthält 25/36 – Insert für 36 · Foto der Vorlage zeigt 556, daher ohne Foto
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;10 Schuss (Tasche);10 rounds (pocket);2924417;nein;standard;;;Modell enthält 10/15 – Insert für 10 · Foto der Vorlage zeigt 556, daher ohne Foto
+munitionsbox-223-rem;Langwaffe;Munitionsbox .223 Rem;Ammo Box .223 Rem;15 Schuss (Tasche);15 rounds (pocket);2924417;nein;standard;;;Modell enthält 10/15 – Insert für 15 · Foto der Vorlage zeigt 556, daher ohne Foto
 munitionsbox-243-win;Langwaffe;Munitionsbox .243 Win;Ammo Box .243 Win;50 Schuss;50 rounds;2430046;ja;standard;;;
 munitionsbox-243-win;Langwaffe;Munitionsbox .243 Win;Ammo Box .243 Win;100 Schuss;100 rounds;2602335;ja;standard;;;
 munitionsbox-25-06-rem;Langwaffe;Munitionsbox .25-06 Rem;Ammo Box .25-06 Rem;50 Schuss;50 rounds;2921334;ja;standard;;;
@@ -89,11 +89,11 @@ munitionsbox-300-win-mag;Langwaffe;Munitionsbox .300 Win Mag;Ammo Box .300 Win M
 munitionsbox-300-win-mag;Langwaffe;Munitionsbox .300 Win Mag;Ammo Box .300 Win Mag;16 Schuss (Mini);16 rounds (mini);2924468;ja;standard;;;
 munitionsbox-300-win-mag;Langwaffe;Munitionsbox .300 Win Mag;Ammo Box .300 Win Mag;8 Schuss (Tasche);8 rounds (pocket);3308575;ja;standard;;;
 munitionsbox-303-british;Langwaffe;Munitionsbox .303 British;Ammo Box .303 British;50 Schuss;50 rounds;3135146;ja;standard;;;
-munitionsbox-308-win-762x51;Langwaffe;Munitionsbox .308 Win / 7.62x51;Ammo Box .308 Win / 7.62x51;50 Schuss;50 rounds;2339308;ja;standard;243;;
-munitionsbox-308-win-762x51;Langwaffe;Munitionsbox .308 Win / 7.62x51;Ammo Box .308 Win / 7.62x51;100 Schuss;100 rounds;2338843;ja;standard;;;
-munitionsbox-308-win-762x51;Langwaffe;Munitionsbox .308 Win / 7.62x51;Ammo Box .308 Win / 7.62x51;20 Schuss (Mini);20 rounds (mini);2924364;ja;standard;;;Modell enthält 20/25 – Insert für 20
-munitionsbox-308-win-762x51;Langwaffe;Munitionsbox .308 Win / 7.62x51;Ammo Box .308 Win / 7.62x51;25 Schuss (Mini);25 rounds (mini);2924364;ja;standard;;;Modell enthält 20/25 – Insert für 25
-munitionsbox-308-win-762x51;Langwaffe;Munitionsbox .308 Win / 7.62x51;Ammo Box .308 Win / 7.62x51;10 Schuss (Tasche);10 rounds (pocket);2739148;ja;standard;;;passt auch für .243 Win
+munitionsbox-308-win;Langwaffe;Munitionsbox .308 Win;Ammo Box .308 Win;50 Schuss;50 rounds;2339308;ja;standard;243;;
+munitionsbox-308-win;Langwaffe;Munitionsbox .308 Win;Ammo Box .308 Win;100 Schuss;100 rounds;2338843;ja;standard;;;
+munitionsbox-308-win;Langwaffe;Munitionsbox .308 Win;Ammo Box .308 Win;20 Schuss (Mini);20 rounds (mini);2924364;ja;standard;;;Modell enthält 20/25 – Insert für 20
+munitionsbox-308-win;Langwaffe;Munitionsbox .308 Win;Ammo Box .308 Win;25 Schuss (Mini);25 rounds (mini);2924364;ja;standard;;;Modell enthält 20/25 – Insert für 25
+munitionsbox-308-win;Langwaffe;Munitionsbox .308 Win;Ammo Box .308 Win;10 Schuss (Tasche);10 rounds (pocket);2739148;ja;standard;;;passt auch für .243 Win
 munitionsbox-338-arc;Langwaffe;Munitionsbox .338 ARC;Ammo Box .338 ARC;50 Schuss;50 rounds;3237259;ja;standard;;;
 munitionsbox-338-win-mag;Langwaffe;Munitionsbox .338 Win Mag;Ammo Box .338 Win Mag;40 Schuss;40 rounds;2976918;ja;standard;;;
 munitionsbox-35-whelen;Langwaffe;Munitionsbox .35 Whelen;Ammo Box .35 Whelen;50 Schuss;50 rounds;3135093;ja;standard;;;
@@ -105,6 +105,14 @@ munitionsbox-45-70-govt;Langwaffe;Munitionsbox .45-70 Govt;Ammo Box .45-70 Govt;
 munitionsbox-45-70-govt;Langwaffe;Munitionsbox .45-70 Govt;Ammo Box .45-70 Govt;72 Schuss;72 rounds;2602306;ja;standard;551;;
 munitionsbox-450-bushmaster;Langwaffe;Munitionsbox .450 Bushmaster;Ammo Box .450 Bushmaster;40 Schuss;40 rounds;2977061;ja;standard;;;
 munitionsbox-450-bushmaster;Langwaffe;Munitionsbox .450 Bushmaster;Ammo Box .450 Bushmaster;8 Schuss (Tasche);8 rounds (pocket);2977075;ja;standard;;;
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;50 Schuss;50 rounds;2117458;ja;standard;241;;Modell enthält 50/60 – Insert für 50
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;60 Schuss;60 rounds;2117458;ja;standard;241;;Modell enthält 50/60 – Insert für 60
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;100 Schuss;100 rounds;2269896;ja;standard;;;Modell enthält 100/152 – Insert für 100
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;152 Schuss;152 rounds;2269896;ja;standard;;;Modell enthält 100/152 – Insert für 152
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;25 Schuss (Mini);25 rounds (mini);2844244;ja;standard;;;Modell enthält 25/36 – Insert für 25
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;36 Schuss (Mini);36 rounds (mini);2844244;ja;standard;;;Modell enthält 25/36 – Insert für 36
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;10 Schuss (Tasche);10 rounds (pocket);2924417;ja;standard;;;Modell enthält 10/15 – Insert für 10
+munitionsbox-556x45;Langwaffe;Munitionsbox 5.56x45;Ammo Box 5.56x45;15 Schuss (Tasche);15 rounds (pocket);2924417;ja;standard;;;Modell enthält 10/15 – Insert für 15
 munitionsbox-65-creedmoor;Langwaffe;Munitionsbox 6.5 Creedmoor;Ammo Box 6.5 Creedmoor;50 Schuss;50 rounds;2338769;ja;standard;;;
 munitionsbox-65-creedmoor;Langwaffe;Munitionsbox 6.5 Creedmoor;Ammo Box 6.5 Creedmoor;100 Schuss;100 rounds;2771549;ja;standard;;;
 munitionsbox-65-creedmoor;Langwaffe;Munitionsbox 6.5 Creedmoor;Ammo Box 6.5 Creedmoor;20 Schuss (Mini);20 rounds (mini);2924463;ja;standard;;;Modell enthält 20/25 – Insert für 20
@@ -121,6 +129,11 @@ munitionsbox-6mm-creedmoor;Langwaffe;Munitionsbox 6mm Creedmoor;Ammo Box 6mm Cre
 munitionsbox-6mm-creedmoor;Langwaffe;Munitionsbox 6mm Creedmoor;Ammo Box 6mm Creedmoor;25 Schuss (Mini);25 rounds (mini);2924463;nein;standard;;;Modell enthält 20/25 – Insert für 25 · Foto der Vorlage zeigt 6.5 Creedmoor, daher ohne Foto
 munitionsbox-762x39;Langwaffe;Munitionsbox 7.62x39;Ammo Box 7.62x39;50 Schuss;50 rounds;2270208;ja;standard;211;;
 munitionsbox-762x39;Langwaffe;Munitionsbox 7.62x39;Ammo Box 7.62x39;100 Schuss;100 rounds;2602487;ja;standard;;;
+munitionsbox-762x51;Langwaffe;Munitionsbox 7.62x51;Ammo Box 7.62x51;50 Schuss;50 rounds;2339308;nein;standard;243;;Foto der Vorlage zeigt 308, daher ohne Foto
+munitionsbox-762x51;Langwaffe;Munitionsbox 7.62x51;Ammo Box 7.62x51;100 Schuss;100 rounds;2338843;nein;standard;;;Foto der Vorlage zeigt 308, daher ohne Foto
+munitionsbox-762x51;Langwaffe;Munitionsbox 7.62x51;Ammo Box 7.62x51;20 Schuss (Mini);20 rounds (mini);2924364;nein;standard;;;Modell enthält 20/25 – Insert für 20 · Foto der Vorlage zeigt 308, daher ohne Foto
+munitionsbox-762x51;Langwaffe;Munitionsbox 7.62x51;Ammo Box 7.62x51;25 Schuss (Mini);25 rounds (mini);2924364;nein;standard;;;Modell enthält 20/25 – Insert für 25 · Foto der Vorlage zeigt 308, daher ohne Foto
+munitionsbox-762x51;Langwaffe;Munitionsbox 7.62x51;Ammo Box 7.62x51;10 Schuss (Tasche);10 rounds (pocket);2739148;nein;standard;;;passt auch für .243 Win · Foto der Vorlage zeigt 308, daher ohne Foto
 munitionsbox-762x54r;Langwaffe;Munitionsbox 7.62x54R;Ammo Box 7.62x54R;36 Schuss;36 rounds;2771621;ja;standard;241;;
 munitionsbox-762x54r;Langwaffe;Munitionsbox 7.62x54R;Ammo Box 7.62x54R;16 Schuss (Mini);16 rounds (mini);2844369;ja;standard;;;
 munitionsbox-7mm-prc;Langwaffe;Munitionsbox 7mm PRC;Ammo Box 7mm PRC;36 Schuss;36 rounds;2843705;ja;standard;;;

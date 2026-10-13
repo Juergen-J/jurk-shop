@@ -101,7 +101,8 @@ export default function ProductActions({
       params.delete("v_id")
     }
 
-    router.replace(pathname + "?" + params.toString())
+    // Only the URL changes (?v_id=); stay where the customer is on the page.
+    router.replace(pathname + "?" + params.toString(), { scroll: false })
   }, [selectedVariant, isValidVariant])
 
   // check if the selected variant is in stock

@@ -2,6 +2,8 @@ Photorealistic product photo for an online shop.
 
 The first image shows the product: a 3D-printed ammo box. Keep this box exactly as it is: same shape, proportions, lid, hinges, latches, surface texture and color. Keep every marking printed or engraved on the box itself (caliber text, cartridge symbol) exactly as it is, with the same letters and position. Do not add, remove or redesign any part of the box. Ignore any caption or overlay text in the corners of the first image; it is not part of the box.
 
-The second image is only a style reference for the scene. Do not copy the box, text or caliber from the second image. Recreate its scene: the box stands on a dark walnut wooden table with visible wood grain, seen from a slightly elevated three-quarter angle, with a softly blurred grey wall in the background. Warm, soft, natural window light from the side, gentle reflections on the table, shallow depth of field, calm premium look.
+If the first image shows several boxes, use only the one in front and show exactly one box.
+
+The second image is only a style reference for the scene. Never copy the box, text or caliber from the second image; the box and its markings always come from the first image. Recreate its scene: the box stands on a dark walnut wooden table with visible wood grain, seen from a slightly elevated three-quarter angle, with a softly blurred grey wall in the background. Warm, soft, natural window light from the side, gentle reflections on the table, shallow depth of field, calm premium look.
 
 Show the whole box, centered, with some table around it. No added text, logos, watermarks, props, cartridges or hands.

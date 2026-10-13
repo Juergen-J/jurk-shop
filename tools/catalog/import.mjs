@@ -11,7 +11,8 @@
  * are brought in line with the CSV: missing ones are added, ones no longer in
  * the CSV are deleted. Prices: preis_eur from the CSV if set, otherwise new
  * variants get PLACEHOLDER_PRICE and existing prices stay as they are.
- * Products that are not in the CSV are left alone.
+ * Catalog products (metadata.design = BoxLoc by Layer51) that are no longer
+ * in the CSV are deleted; other products are left alone.
  *
  * Options:
  *   --dry-run        only print what would change
@@ -35,6 +36,8 @@ const CATEGORIES = {
 
 const SIZE_OPTION = { title: "Ausführung", en: "Size", rank: 0 }
 const COLOR_OPTION = { title: "Farbe", en: "Color", rank: 1 }
+/** Marks products this script manages (metadata.design). */
+const DESIGN = "BoxLoc by Layer51"
 /** Box / lettering. The insert is black unless the customer asks otherwise. */
 const COLORS = [
   { value: "Wüstenbraun / Schwarz", en: "Desert tan / black" },
@@ -235,7 +238,7 @@ for (const product of products) {
         ...(categoryId ? { categories: [{ id: categoryId }] } : {}),
         ...(shippingProfileId ? { shipping_profile_id: shippingProfileId } : {}),
         ...(salesChannelId ? { sales_channels: [{ id: salesChannelId }] } : {}),
-        metadata: { design: "BoxLoc by Layer51", ai_images: false },
+        metadata: { design: DESIGN, ai_images: false },
         options: [
           { id: sizeOption.id, value_ids: sizes.map((v) => sizeOption.valueIds.get(v)) },
           { id: colorOption.id, value_ids: colors.map((v) => colorOption.valueIds.get(v)) },
@@ -373,6 +376,18 @@ for (const product of products) {
   updated++
 }
 
+// --- Catalog products that left the CSV --------------------------------------
+const handles = new Set(products.map((p) => p.handle))
+const { products: all } = await api("/admin/products?limit=1000&fields=id,handle,metadata")
+let deleted = 0
+for (const p of all) {
+  if (p.metadata?.design === DESIGN && !handles.has(p.handle)) {
+    log(`${p.handle}: not in catalog.csv any more, delete`)
+    await write(`/admin/products/${p.id}`, { method: "DELETE" })
+    deleted++
+  }
+}
+
 // --- Translations ----------------------------------------------------------
 // Option titles and values, then everything collected above, skipping
 // records that already have an English translation.
@@ -430,4 +445,4 @@ for (const [option, used] of [
   }
 }
 
-log(`done: ${created} created, ${updated} updated${DRY_RUN ? " (dry run)" : ""}`)
+log(`done: ${created} created, ${updated} updated, ${deleted} deleted${DRY_RUN ? " (dry run)" : ""}`)
