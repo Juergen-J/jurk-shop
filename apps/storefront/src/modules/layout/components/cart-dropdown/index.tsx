@@ -216,7 +216,7 @@ const CartDropdown = ({
                   </div>
                   <span>{t("empty")}</span>
                   <div>
-                    <LocalizedClientLink href="/store">
+                    <LocalizedClientLink href="/">
                       <>
                         <span className="sr-only">{t("goToAllProducts")}</span>
                         <Button onClick={close}>{t("explore")}</Button>

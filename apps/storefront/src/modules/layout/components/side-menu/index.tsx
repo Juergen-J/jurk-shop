@@ -4,18 +4,13 @@ import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/re
 import { BarsThree, XMark } from "@medusajs/icons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { SHOP_NAME } from "@lib/constants"
+import { CategoryNode } from "@lib/util/category-tree"
 import { useTranslations } from "next-intl"
 import { Fragment } from "react"
 import LanguageSwitch from "../language-switch"
 
-const SideMenu = () => {
+const SideMenu = ({ categories }: { categories: CategoryNode[] }) => {
   const t = useTranslations("nav")
-
-  const items = [
-    { label: t("home"), href: "/" },
-    { label: t("shop"), href: "/store" },
-    { label: t("cartTitle"), href: "/cart" },
-  ]
 
   return (
     <Popover className="h-full flex">
@@ -39,7 +34,11 @@ const SideMenu = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <PopoverPanel className="fixed inset-0 z-[51] bg-white flex flex-col p-6">
+            {/* Portal: the header's backdrop-blur would otherwise confine the fixed panel. */}
+            <PopoverPanel
+              portal
+              className="fixed inset-0 z-[51] bg-white flex flex-col p-6"
+            >
               <div className="flex justify-end">
                 <button
                   data-testid="close-menu-button"
@@ -49,18 +48,51 @@ const SideMenu = () => {
                   <XMark />
                 </button>
               </div>
-              <ul className="flex flex-col gap-6 mt-8">
-                {items.map((item) => (
-                  <li key={item.href}>
+              <ul className="flex flex-col gap-5 mt-6 overflow-y-auto pb-6">
+                <li>
+                  <LocalizedClientLink
+                    href="/"
+                    className="text-2xl text-ui-fg-base hover:text-brand"
+                    onClick={() => close()}
+                  >
+                    {t("allProducts")}
+                  </LocalizedClientLink>
+                </li>
+                {categories.map((category) => (
+                  <li key={category.id} className="flex flex-col gap-3">
                     <LocalizedClientLink
-                      href={item.href}
-                      className="text-3xl leading-10 text-ui-fg-base hover:text-brand"
+                      href={`/categories/${category.handle}`}
+                      className="text-2xl text-ui-fg-base hover:text-brand"
                       onClick={() => close()}
                     >
-                      {item.label}
+                      {category.name}
                     </LocalizedClientLink>
+                    {category.children.length > 0 && (
+                      <ul className="flex flex-col gap-3 border-l border-ui-border-base pl-4">
+                        {category.children.map((child) => (
+                          <li key={child.id}>
+                            <LocalizedClientLink
+                              href={`/categories/${child.handle}`}
+                              className="text-large-regular text-ui-fg-subtle hover:text-brand"
+                              onClick={() => close()}
+                            >
+                              {child.name}
+                            </LocalizedClientLink>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </li>
                 ))}
+                <li>
+                  <LocalizedClientLink
+                    href="/cart"
+                    className="text-2xl text-ui-fg-base hover:text-brand"
+                    onClick={() => close()}
+                  >
+                    {t("cartTitle")}
+                  </LocalizedClientLink>
+                </li>
               </ul>
               <div className="mt-auto flex items-center justify-between">
                 <LanguageSwitch />

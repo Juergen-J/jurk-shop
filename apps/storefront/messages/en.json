@@ -1,15 +1,15 @@
 {
   "nav": {
-    "home": "Home",
-    "shop": "Shop",
     "cart": "Cart ({count})",
     "cartTitle": "Cart",
     "menu": "Menu",
     "close": "Close",
-    "language": "Language"
+    "language": "Language",
+    "allProducts": "All products",
+    "categories": "Categories"
   },
   "footer": {
-    "tagline": "3D printed ammo boxes – made to fit your caliber, printed in Germany.",
+    "tagline": "3D printed products – made to order in Germany.",
     "categories": "Categories",
     "shop": "Shop",
     "allProducts": "All products",
@@ -27,25 +27,15 @@
     "vatNoticeSmallBusiness": "No VAT is charged (small business under § 19 UStG). All prices plus shipping."
   },
   "home": {
-    "metaTitle": "3D printed ammo boxes",
-    "metaDescription": "Custom ammo boxes: choose caliber, size and color – we print your box after you order.",
-    "eyebrow": "3D printed to order",
-    "title": "Ammo boxes made to fit your caliber.",
-    "subtitle": "Choose caliber, size and color – we print your box after you order and ship it with DHL.",
-    "cta": "Go to shop",
-    "productsTitle": "Our products",
-    "highlights": {
-      "customTitle": "Your configuration",
-      "customText": "Combine caliber, round count and color freely.",
-      "printTitle": "Printed to order",
-      "printText": "Every box is made fresh for you – no stock items.",
-      "shippingTitle": "Shipped with DHL",
-      "shippingText": "Packed safely, delivered across Germany."
-    }
+    "metaTitle": "3D printing to order",
+    "metaDescription": "3D printed products, made to order in Germany and shipped with DHL."
   },
   "store": {
     "title": "All products",
-    "description": "Ammo boxes and accessories – 3D printed after you order."
+    "description": "3D printed to order, made in Germany.",
+    "searchTitle": "Search results for “{q}”",
+    "noResults": "No products found for “{q}”. Try another term, e.g. the caliber.",
+    "empty": "There are no products here yet."
   },
   "product": {
     "choose": "Choose {option}",
@@ -97,7 +87,7 @@
     "subtotal": "Subtotal",
     "inclVat": "(incl. VAT)",
     "empty": "Your cart is empty.",
-    "emptyText": "There's nothing in your cart yet. Browse our shop and configure your ammo box.",
+    "emptyText": "There's nothing in your cart yet. Have a look around our shop.",
     "explore": "Explore products",
     "goToAllProducts": "Go to all products"
   },
@@ -265,5 +255,10 @@
     "receivedTitle": "We have received your withdrawal",
     "receivedText": "Received on {date}. We have sent a confirmation of receipt with the content of your declaration to {email}.",
     "error": "Your withdrawal could not be submitted. Please try again or email us at info@jurk.pro."
+  },
+  "search": {
+    "label": "Search products",
+    "placeholder": "Search products, e.g. 9mm",
+    "clear": "Clear search"
   }
 }

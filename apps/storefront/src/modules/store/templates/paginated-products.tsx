@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server"
+
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import { OptionValueIds } from "@lib/util/product-option-filters"
@@ -13,6 +15,7 @@ type PaginatedProductsParams = {
   category_id?: string[]
   id?: string[]
   order?: string
+  q?: string
 }
 
 export default async function PaginatedProducts({
@@ -23,6 +26,7 @@ export default async function PaginatedProducts({
   productsIds,
   countryCode,
   optionValueIds,
+  q,
 }: {
   sortBy?: SortOptions
   page: number
@@ -32,6 +36,8 @@ export default async function PaginatedProducts({
   productsIds?: string[]
   countryCode: string
   optionValueIds?: OptionValueIds
+  /** Full-text search over title, description, variants etc. */
+  q?: string
 }) {
   const queryParams: PaginatedProductsParams = {
     limit: 12,
@@ -43,6 +49,10 @@ export default async function PaginatedProducts({
 
   if (categoryIds?.length) {
     queryParams["category_id"] = categoryIds
+  }
+
+  if (q) {
+    queryParams["q"] = q
   }
 
   if (productsIds) {
@@ -70,6 +80,18 @@ export default async function PaginatedProducts({
   })
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)
+
+  if (!products.length) {
+    const t = await getTranslations("store")
+    return (
+      <p
+        className="py-16 text-center txt-medium text-ui-fg-subtle"
+        data-testid="no-products"
+      >
+        {q ? t("noResults", { q }) : t("empty")}
+      </p>
+    )
+  }
 
   return (
     <>

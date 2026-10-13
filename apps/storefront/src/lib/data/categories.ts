@@ -1,6 +1,7 @@
 import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
 import { getCacheOptions } from "./cookies"
+import { buildCategoryTree } from "@lib/util/category-tree"
 
 export const listCategories = async (query?: Record<string, unknown>) => {
   const next = {
@@ -46,4 +47,12 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
       }
     )
     .then(({ product_categories }) => product_categories[0])
+}
+
+/** All categories as a tree, for the menu and the catalog sidebar. */
+export const getCategoryTree = async () => {
+  const categories = await listCategories({
+    fields: "id,handle,name,rank,parent_category_id",
+  })
+  return buildCategoryTree(categories ?? [])
 }

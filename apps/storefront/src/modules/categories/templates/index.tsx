@@ -1,15 +1,16 @@
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
-import InteractiveLink from "@modules/common/components/interactive-link"
+import { getCategoryTree } from "@lib/data/categories"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import CategoryNav from "@modules/store/components/category-nav"
 import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 import { OptionValueIds } from "@lib/util/product-option-filters"
 
-export default function CategoryTemplate({
+export default async function CategoryTemplate({
   category,
   sortBy,
   page,
@@ -27,57 +28,34 @@ export default function CategoryTemplate({
 
   if (!category || !countryCode) notFound()
 
-  const parents = [] as HttpTypes.StoreProductCategory[]
-
-  const getParents = (category: HttpTypes.StoreProductCategory) => {
-    if (category.parent_category) {
-      parents.push(category.parent_category)
-      getParents(category.parent_category)
-    }
-  }
-
-  getParents(category)
+  const tree = await getCategoryTree()
+  const parent = tree.find((c) => c.id === category.parent_category_id)
 
   return (
     <div
-      className="flex flex-col py-10 content-container"
+      className="py-8 small:py-10 content-container flex flex-col small:flex-row gap-y-6 small:gap-x-10"
       data-testid="category-container"
     >
-      <div className="w-full">
-        <div className="flex flex-row mb-4 text-3xl leading-10 gap-4">
-          {parents &&
-            parents.map((parent) => (
-              <span key={parent.id} className="text-ui-fg-subtle">
-                <LocalizedClientLink
-                  className="mr-4 hover:text-black"
-                  href={`/categories/${parent.handle}`}
-                  data-testid="sort-by-link"
-                >
-                  {parent.name}
-                </LocalizedClientLink>
-                /
-              </span>
-            ))}
-          <h1 data-testid="category-page-title">{category.name}</h1>
+      <CategoryNav tree={tree} activeHandle={category.handle} />
+      <div className="flex-1 min-w-0">
+        <div className="mb-8 flex flex-col gap-y-1">
+          {parent && (
+            <LocalizedClientLink
+              href={`/categories/${parent.handle}`}
+              className="txt-compact-small text-ui-fg-subtle hover:text-ui-fg-base"
+            >
+              {parent.name}
+            </LocalizedClientLink>
+          )}
+          <h1 className="text-2xl-semi" data-testid="category-page-title">
+            {category.name}
+          </h1>
+          {category.description && (
+            <p className="txt-medium text-ui-fg-subtle">
+              {category.description}
+            </p>
+          )}
         </div>
-        {category.description && (
-          <div className="mb-10 txt-medium text-ui-fg-subtle">
-            <p>{category.description}</p>
-          </div>
-        )}
-        {category.category_children && (
-          <div className="mb-8 text-base-large">
-            <ul className="grid grid-cols-1 gap-2">
-              {category.category_children?.map((c) => (
-                <li key={c.id}>
-                  <InteractiveLink href={`/categories/${c.handle}`}>
-                    {c.name}
-                  </InteractiveLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
         <Suspense
           fallback={
             <SkeletonProductGrid

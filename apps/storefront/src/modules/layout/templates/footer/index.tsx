@@ -58,7 +58,7 @@ export default async function Footer() {
               </span>
               <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
                 <li>
-                  <LocalizedClientLink className="hover:text-ui-fg-base" href="/store">
+                  <LocalizedClientLink className="hover:text-ui-fg-base" href="/">
                     {t("allProducts")}
                   </LocalizedClientLink>
                 </li>

@@ -1,15 +1,15 @@
 {
   "nav": {
-    "home": "Startseite",
-    "shop": "Shop",
     "cart": "Warenkorb ({count})",
     "cartTitle": "Warenkorb",
     "menu": "Menü",
     "close": "Schließen",
-    "language": "Sprache"
+    "language": "Sprache",
+    "allProducts": "Alle Produkte",
+    "categories": "Kategorien"
   },
   "footer": {
-    "tagline": "Patronenboxen aus dem 3D-Drucker – passgenau für dein Kaliber, gedruckt in Deutschland.",
+    "tagline": "3D-gedruckte Produkte – nach deiner Bestellung in Deutschland gefertigt.",
     "categories": "Kategorien",
     "shop": "Shop",
     "allProducts": "Alle Produkte",
@@ -27,25 +27,15 @@
     "vatNoticeSmallBusiness": "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Alle Preise zzgl. Versand."
   },
   "home": {
-    "metaTitle": "Patronenboxen aus dem 3D-Drucker",
-    "metaDescription": "Munitionsboxen nach Maß: Kaliber, Größe und Farbe wählen – wir drucken deine Box nach Bestellung.",
-    "eyebrow": "3D-Druck nach Bestellung",
-    "title": "Patronenboxen, passgenau für dein Kaliber.",
-    "subtitle": "Wähle Kaliber, Größe und Farbe – wir drucken deine Box nach der Bestellung und schicken sie dir per DHL.",
-    "cta": "Zum Shop",
-    "productsTitle": "Unsere Produkte",
-    "highlights": {
-      "customTitle": "Deine Konfiguration",
-      "customText": "Kaliber, Schusszahl und Farbe frei kombinierbar.",
-      "printTitle": "Gedruckt nach Bestellung",
-      "printText": "Jede Box wird frisch für dich gefertigt – keine Lagerware.",
-      "shippingTitle": "Versand mit DHL",
-      "shippingText": "Sicher verpackt, Zustellung in ganz Deutschland."
-    }
+    "metaTitle": "3D-Druck nach Bestellung",
+    "metaDescription": "3D-gedruckte Produkte, nach deiner Bestellung in Deutschland gefertigt und mit DHL verschickt."
   },
   "store": {
     "title": "Alle Produkte",
-    "description": "Patronenboxen und Zubehör – nach deiner Bestellung im 3D-Druck gefertigt."
+    "description": "3D-gedruckt nach deiner Bestellung, gefertigt in Deutschland.",
+    "searchTitle": "Suchergebnisse für „{q}“",
+    "noResults": "Keine Produkte für „{q}“ gefunden. Versuche es mit einem anderen Begriff, z. B. dem Kaliber.",
+    "empty": "Hier gibt es noch keine Produkte."
   },
   "product": {
     "choose": "{option} wählen",
@@ -97,7 +87,7 @@
     "subtotal": "Zwischensumme",
     "inclVat": "(inkl. MwSt.)",
     "empty": "Dein Warenkorb ist leer.",
-    "emptyText": "Du hast noch nichts im Warenkorb. Schau dich in unserem Shop um und konfiguriere deine Patronenbox.",
+    "emptyText": "Du hast noch nichts im Warenkorb. Schau dich in unserem Shop um.",
     "explore": "Produkte ansehen",
     "goToAllProducts": "Zu allen Produkten"
   },
@@ -265,5 +255,10 @@
     "receivedTitle": "Dein Widerruf ist bei uns eingegangen",
     "receivedText": "Eingegangen am {date}. Eine Eingangsbestätigung mit dem Inhalt deiner Erklärung haben wir an {email} gesendet.",
     "error": "Der Widerruf konnte nicht übermittelt werden. Bitte versuche es erneut oder schreib uns an info@jurk.pro."
+  },
+  "search": {
+    "label": "Produkte suchen",
+    "placeholder": "Produkte suchen, z. B. 9mm",
+    "clear": "Suche löschen"
   }
 }
