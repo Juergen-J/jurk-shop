@@ -71,7 +71,13 @@
     },
     "vatNoticeSmallBusiness": "Endpreis zzgl. Versand · gemäß § 19 UStG ohne Umsatzsteuer",
     "aiImagesBadge": "KI-bearbeitet",
-    "aiImagesNote": "Die Produktfotos wurden mit KI bearbeitet (z. B. Hintergrund und Licht). Form und Farbe der Box entsprechen dem Original."
+    "aiImagesNote": "Die Produktfotos wurden mit KI bearbeitet (z. B. Hintergrund und Licht). Die abgebildete Farbe ist beispielhaft, die Form entspricht dem Original.",
+    "colorNote": {
+      "label": "Deine Wunschfarbe",
+      "placeholder": "z. B. Box Rot, Schrift Weiß, Einsatz Schwarz",
+      "hint": "Wir bestätigen die Farbe per E-Mail, bevor wir drucken. Ohne Angabe ist der Einsatz schwarz.",
+      "lineItem": "Wunschfarbe"
+    }
   },
   "cart": {
     "title": "Warenkorb",

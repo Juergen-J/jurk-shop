@@ -34,6 +34,7 @@ type OrderRow = {
     product_id?: string | null
     quantity: number
     original_total: number
+    metadata?: Record<string, unknown> | null
     variant?: {
       options?: {
         id: string
@@ -84,6 +85,7 @@ export const buildOrderEmailsStep = createStep(
         "items.product_id",
         "items.quantity",
         "items.original_total",
+        "items.metadata",
         "items.variant.options.id",
         "items.variant.options.value",
         "items.variant.options.option_id",
@@ -125,6 +127,10 @@ export const buildOrderEmailsStep = createStep(
           title: translate(o.option_id ?? o.option?.id, o.option?.title ?? ""),
           value: translate(o.id, o.value),
         })),
+        requestedColor:
+          typeof item.metadata?.requested_color === "string"
+            ? item.metadata.requested_color
+            : undefined,
         quantity: item.quantity,
         // before discounts, so the lines add up to the subtotal
         total: item.original_total,

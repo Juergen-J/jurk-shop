@@ -71,7 +71,13 @@
     },
     "vatNoticeSmallBusiness": "Final price plus shipping · no VAT charged (§ 19 UStG)",
     "aiImagesBadge": "AI-edited",
-    "aiImagesNote": "The product photos were edited with AI (e.g. background and lighting). The shape and color of the box match the original."
+    "aiImagesNote": "The product photos were edited with AI (e.g. background and lighting). The color shown is an example; the shape matches the original.",
+    "colorNote": {
+      "label": "Your requested colors",
+      "placeholder": "e.g. box red, lettering white, insert black",
+      "hint": "We confirm the colors by email before printing. The insert is black unless you say otherwise.",
+      "lineItem": "Requested colors"
+    }
   },
   "cart": {
     "title": "Cart",

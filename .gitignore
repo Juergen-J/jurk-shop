@@ -63,3 +63,6 @@ Thumbs.db
 
 # Product photos (originals from MakerWorld, AI edits)
 catalog/images/
+
+# Local file uploads (backend without S3)
+apps/backend/static/

@@ -48,6 +48,8 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [requestedColor, setRequestedColor] = useState("")
+  const colorNoteRef = useRef<HTMLTextAreaElement>(null)
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -130,9 +132,19 @@ export default function ProductActions({
 
   const inView = useIntersection(actionsRef, "0px")
 
+  // "Andere Farbe (nach Anfrage)": the customer describes the colors they want.
+  const needsColorNote = selectedVariant?.metadata?.color_on_request === true
+  const colorNoteMissing = needsColorNote && !requestedColor.trim()
+
   // add the selected variant to the cart
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
+
+    if (colorNoteMissing) {
+      colorNoteRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+      colorNoteRef.current?.focus()
+      return null
+    }
 
     setIsAdding(true)
 
@@ -140,6 +152,9 @@ export default function ProductActions({
       variantId: selectedVariant.id,
       quantity: 1,
       countryCode,
+      ...(needsColorNote
+        ? { metadata: { requested_color: requestedColor.trim() } }
+        : {}),
     })
 
     setIsAdding(false)
@@ -169,6 +184,32 @@ export default function ProductActions({
           )}
         </div>
 
+        {needsColorNote && (
+          <div className="flex flex-col gap-y-2">
+            <label
+              htmlFor="requested-color"
+              className="txt-compact-small-plus text-ui-fg-base"
+            >
+              {t("colorNote.label")}
+            </label>
+            <textarea
+              id="requested-color"
+              ref={colorNoteRef}
+              value={requestedColor}
+              onChange={(e) => setRequestedColor(e.target.value)}
+              placeholder={t("colorNote.placeholder")}
+              rows={2}
+              maxLength={300}
+              required
+              className="w-full rounded-lg border border-ui-border-base bg-white px-4 py-3 txt-compact-medium outline-none transition-colors hover:border-ui-border-strong focus:border-brand focus:ring-2 focus:ring-brand/20"
+              data-testid="requested-color"
+            />
+            <span className="txt-compact-small text-ui-fg-subtle">
+              {t("colorNote.hint")}
+            </span>
+          </div>
+        )}
+
         <div className="flex flex-col gap-y-1 pt-2">
           <ProductPrice product={product} variant={selectedVariant} />
           <span className="txt-compact-small text-ui-fg-subtle">
@@ -183,7 +224,8 @@ export default function ProductActions({
             !selectedVariant ||
             !!disabled ||
             isAdding ||
-            !isValidVariant
+            !isValidVariant ||
+            colorNoteMissing
           }
           variant="primary"
           className="w-full h-11"

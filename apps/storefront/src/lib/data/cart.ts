@@ -119,10 +119,13 @@ export async function addToCart({
   variantId,
   quantity,
   countryCode,
+  metadata,
 }: {
   variantId: string
   quantity: number
   countryCode: string
+  /** Stored on the line item, e.g. the requested colors (`requested_color`). */
+  metadata?: Record<string, string>
 }) {
   if (!variantId) {
     throw new Error("Missing variant ID when adding to cart")
@@ -144,6 +147,7 @@ export async function addToCart({
       {
         variant_id: variantId,
         quantity,
+        ...(metadata ? { metadata } : {}),
       },
       {},
       headers

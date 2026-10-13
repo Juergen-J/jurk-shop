@@ -8,7 +8,7 @@ import {
 /**
  * The shop is written in German. This enables de-DE and en-US on the store
  * and adds English translations for the base data. Products are translated by
- * the product-catalog script, or in the admin.
+ * tools/catalog/import.mjs, or in the admin.
  */
 const LOCALE = "en-US";
 

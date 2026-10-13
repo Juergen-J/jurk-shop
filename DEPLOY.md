@@ -99,7 +99,15 @@ NEXT_PUBLIC_FILE_HOSTNAME=images.jurk.pro
    `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` of the storefront and deploy it.
 3. Admin → Settings → Store: bank details, notification email, free shipping,
    volume discounts, production times.
-4. Replace the sample product variants/prices and upload photos.
+4. Products: Admin → Settings → Secret API Keys → create a key, then from
+   your machine (the key stays out of git and chat):
+   ```bash
+   MEDUSA_URL=https://api.jurk.pro MEDUSA_ADMIN_KEY=sk_... node tools/catalog/import.mjs
+   MEDUSA_URL=https://api.jurk.pro MEDUSA_ADMIN_KEY=sk_... node tools/catalog/images.mjs upload
+   ```
+   `catalog/catalog.csv` is the source for products and sizes; run the import
+   again after changing it. Photos are made with `tools/catalog/images.mjs`
+   (download, generate, review) before the upload.
 5. DNS: CNAME `shop`, `api` (and `images` for R2) to the targets Railway /
    Cloudflare show.
 6. Place a test order and submit a test withdrawal (Vertrag widerrufen) to

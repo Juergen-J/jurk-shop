@@ -1,8 +1,13 @@
+"use client"
+
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@modules/common/components/ui"
+import { useTranslations } from "next-intl"
 
 type LineItemOptionsProps = {
   variant: HttpTypes.StoreProductVariant | undefined
+  /** Line item metadata; shows the requested colors if there are any. */
+  metadata?: Record<string, unknown> | null
   "data-testid"?: string
   "data-value"?: HttpTypes.StoreProductVariant
 }
@@ -13,10 +18,14 @@ type LineItemOptionsProps = {
  */
 const LineItemOptions = ({
   variant,
+  metadata,
   "data-testid": dataTestid,
   "data-value": dataValue,
 }: LineItemOptionsProps) => {
+  const t = useTranslations("product.colorNote")
   const options = (variant?.options ?? []).filter((o) => o.option?.title)
+  const requestedColor =
+    typeof metadata?.requested_color === "string" ? metadata.requested_color : null
 
   return (
     <Text
@@ -31,6 +40,11 @@ const LineItemOptions = ({
             </span>
           ))
         : variant?.title}
+      {requestedColor && (
+        <span>
+          {t("lineItem")}: {requestedColor}
+        </span>
+      )}
     </Text>
   )
 }

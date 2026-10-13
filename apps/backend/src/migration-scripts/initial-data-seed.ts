@@ -242,5 +242,5 @@ export default async function initial_data_seed({
     },
   });
   logger.info("Finished seeding stock location data.");
-  // Categories and products: see product-catalog.ts
+  // Categories and products: node tools/catalog/import.mjs (see DEPLOY.md)
 }

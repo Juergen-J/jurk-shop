@@ -2,16 +2,17 @@
 /**
  * Product photos for the catalog, from the MakerWorld cover images.
  *
- *   node tools/catalog-images/run.mjs download   # cover photos -> catalog/images/original
- *   node tools/catalog-images/run.mjs generate   # OpenAI edit   -> catalog/images/ai
- *   node tools/catalog-images/run.mjs review     # side by side  -> catalog/images/review.html
- *   node tools/catalog-images/run.mjs upload     # AI images -> Medusa products (MEDUSA_URL, MEDUSA_ADMIN_KEY)
+ *   node tools/catalog/images.mjs download   # cover photos -> catalog/images/original
+ *   node tools/catalog/images.mjs generate   # OpenAI edit   -> catalog/images/ai
+ *   node tools/catalog/images.mjs review     # side by side  -> catalog/images/review.html
+ *   node tools/catalog/images.mjs upload     # AI images -> Medusa products (MEDUSA_URL, MEDUSA_ADMIN_KEY)
  *
  * Options:
  *   --only 1986813,2612021   only these MakerWorld model ids
  *   --force                  redo images that already exist
  *
- * The models come from apps/backend/src/catalog/boxloc.ts. `generate` needs
+ * The models come from catalog/catalog.csv: every MakerWorld model of a row
+ * with foto=ja, once per product. `generate` needs
  * OPENAI_API_KEY (environment or the root .env); OPENAI_IMAGE_MODEL and
  * OPENAI_IMAGE_QUALITY override the defaults below. The prompt is in
  * prompt.txt next to this file; catalog/images/style.jpg, if present, is sent
@@ -24,8 +25,8 @@ import { dirname, join, relative } from "node:path"
 import { fileURLToPath } from "node:url"
 import { promisify } from "node:util"
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..")
-const CATALOG_FILE = join(ROOT, "apps/backend/src/catalog/boxloc.ts")
+import { adminClient, readCatalog, required, ROOT } from "./lib.mjs"
+
 const OUT = join(ROOT, "catalog/images")
 const ORIGINAL = join(OUT, "original")
 const AI = join(OUT, "ai")
@@ -44,19 +45,19 @@ const force = args.includes("--force")
 const onlyArg = args[args.indexOf("--only") + 1]
 const only = args.includes("--only") ? new Set(onlyArg.split(",")) : null
 
-/** Models from the catalog: [{ id, handle }] in catalog order. */
+/** Models with photos: [{ id, handle }] in catalog order, once per product. */
 const loadModels = async () => {
-  const source = await readFile(CATALOG_FILE, "utf8")
-  const models = []
-  let handle = null
-  for (const line of source.split("\n")) {
-    const h = line.match(/handle:\s*"(munitionsbox-[^"]+)"/)
-    if (h) handle = h[1]
-    for (const m of line.matchAll(/rounds\(\s*[^,]+,\s*(\d+)|model:\s*(\d+)/g)) {
-      models.push({ id: m[1] ?? m[2], handle })
-    }
-  }
-  return models.filter((m) => !only || only.has(m.id))
+  const seen = new Set()
+  return (await readCatalog())
+    .filter((r) => r.foto === "ja")
+    .map((r) => ({ id: r.makerworld_id, handle: r.produkt_handle }))
+    .filter((m) => {
+      const key = `${m.handle}|${m.id}`
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+    .filter((m) => !only || only.has(m.id))
 }
 
 const ext = (url) => (url.match(/\.(png|jpe?g|webp)(\?|$)/i)?.[1] ?? "png").toLowerCase()
@@ -101,25 +102,6 @@ const download = async (models) => {
     await writeFile(file, Buffer.from(await image.arrayBuffer()))
     console.log(`${id} ${handle}: ${title} -> ${relative(ROOT, file)}`)
   }
-}
-
-/** A setting from the environment or the root .env (values are never printed). */
-const envValue = async (name) => {
-  if (process.env[name]) return process.env[name]
-  const env = join(ROOT, ".env")
-  if (existsSync(env)) {
-    const line = (await readFile(env, "utf8"))
-      .split("\n")
-      .find((l) => l.startsWith(`${name}=`))
-    if (line) return line.slice(name.length + 1).trim().replace(/^["']|["']$/g, "")
-  }
-  return undefined
-}
-
-const required = async (name) => {
-  const value = await envValue(name)
-  if (!value) throw new Error(`${name} is not set (environment or root .env)`)
-  return value
 }
 
 const dataUrl = async (file) => {
@@ -203,7 +185,7 @@ const review = async (models) => {
 </style></head>
 <body>
 <h1>Produktfotos prüfen: links Original (MakerWorld), rechts KI</h1>
-<p>Unpassende Bilder neu erzeugen: <code>node tools/catalog-images/run.mjs generate --only ID --force</code></p>
+<p>Unpassende Bilder neu erzeugen: <code>node tools/catalog/images.mjs generate --only ID --force</code></p>
 ${rows.join("\n")}
 </body></html>`
   const file = join(OUT, "review.html")
@@ -217,18 +199,8 @@ ${rows.join("\n")}
  * all its models in catalog order; the first one becomes the thumbnail.
  */
 const upload = async (models) => {
-  const baseUrl = (await envValue("MEDUSA_URL")) ?? "http://localhost:9000"
-  const auth = `Basic ${Buffer.from(`${await required("MEDUSA_ADMIN_KEY")}:`).toString("base64")}`
-  const admin = async (path, init = {}) => {
-    const res = await fetch(`${baseUrl}${path}`, {
-      ...init,
-      headers: { authorization: auth, ...init.headers },
-    })
-    const body = await res.json().catch(() => ({}))
-    if (!res.ok) throw new Error(`${init.method ?? "GET"} ${path}: ${res.status} ${body.message ?? ""}`)
-    return body
-  }
-  console.log(`uploading to ${baseUrl}`)
+  const admin = await adminClient()
+  console.log(`uploading to ${admin.baseUrl}`)
 
   const byProduct = new Map()
   for (const m of models) {
@@ -253,12 +225,11 @@ const upload = async (models) => {
     const product = products[0]
     await admin(`/admin/products/${product.id}`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
+      body: {
         images: files.map((f) => ({ url: f.url })),
         thumbnail: files[0].url,
         metadata: { ...product.metadata, ai_images: true },
-      }),
+      },
     })
     console.log(`${handle}: ${files.length} image(s)`)
   }
@@ -266,7 +237,7 @@ const upload = async (models) => {
 
 const commands = { download, generate, review, upload }
 if (!commands[command]) {
-  console.error("Usage: node tools/catalog-images/run.mjs download|generate|review|upload [--only ids] [--force]")
+  console.error("Usage: node tools/catalog/images.mjs download|generate|review|upload [--only ids] [--force]")
   process.exit(1)
 }
 await commands[command](await loadModels())

@@ -8,6 +8,8 @@ import { COMPANY } from "../legal/company"
 export type EmailOrderItem = {
   title: string
   options: { title: string; value: string }[]
+  /** Colors the customer asked for ("Andere Farbe (nach Anfrage)") */
+  requestedColor?: string
   quantity: number
   total: number
 }
@@ -97,6 +99,11 @@ const itemsTable = (ctx: OrderEmailContext) => {
                 `<div style="color:#71717a;font-size:13px;">${escape(o.title)}: ${escape(o.value)}</div>`
             )
             .join("")}
+          ${
+            item.requestedColor
+              ? `<div style="color:#71717a;font-size:13px;">${escape(t.requestedColor)}: ${escape(item.requestedColor)}</div>`
+              : ""
+          }
         </td>
         <td style="padding:10px 0;border-bottom:1px solid #f4f4f5;text-align:center;vertical-align:top;color:#52525b;white-space:nowrap;">${item.quantity} ×</td>
         <td style="padding:10px 0;border-bottom:1px solid #f4f4f5;text-align:right;vertical-align:top;color:#18181b;white-space:nowrap;">${money(item.total)}</td>

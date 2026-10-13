@@ -43,6 +43,7 @@ type Messages = {
   adminSubject: (n: string, total: string) => string
   adminIntro: string
   adminCustomer: string
+  requestedColor: string
 }
 
 export const messages: Record<EmailLocale, Messages> = {
@@ -92,6 +93,7 @@ export const messages: Record<EmailLocale, Messages> = {
     adminSubject: (n, total) => `Neue Bestellung #${n} (${total})`,
     adminIntro: "Es ist eine neue Bestellung eingegangen.",
     adminCustomer: "Kunde",
+    requestedColor: "Wunschfarbe",
   },
   en: {
     subject: (n) => `Your order #${n} at JURK.PRO Shop`,
@@ -141,5 +143,6 @@ export const messages: Record<EmailLocale, Messages> = {
     adminSubject: (n, total) => `New order #${n} (${total})`,
     adminIntro: "A new order has been placed.",
     adminCustomer: "Customer",
+    requestedColor: "Requested colors",
   },
 }
