@@ -28,8 +28,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150",
         className,
         {
-          // Product photos are square (see tools/catalog-images).
-          "aspect-[1/1]": true,
+          // Product photos are landscape (see tools/catalog); 4:3 fits both the
+          // 3:2 and the older square ones with little cropping.
+          "aspect-[4/3]": true,
           "w-[180px]": size === "small",
           "w-[290px]": size === "medium",
           "w-[440px]": size === "large",

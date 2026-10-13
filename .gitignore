@@ -66,3 +66,6 @@ catalog/images/
 
 # Local file uploads (backend without S3)
 apps/backend/static/
+
+# Price calculation exported from Notion (private)
+catalog/notion-ammobox.csv

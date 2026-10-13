@@ -9,8 +9,9 @@
  * New products are created with German texts and English translations.
  * Existing products (same handle) keep their texts and images; their variants
  * are brought in line with the CSV: missing ones are added, ones no longer in
- * the CSV are deleted. Prices: preis_eur from the CSV if set, otherwise new
- * variants get PLACEHOLDER_PRICE and existing prices stay as they are.
+ * the CSV are deleted. Prices: preis_eur if set, otherwise calculated from
+ * gewicht_g and druckzeit_h (see rowPrice); without either, new variants get
+ * PLACEHOLDER_PRICE and existing prices stay as they are.
  * Catalog products (metadata.design = BoxLoc by Layer51) that are no longer
  * in the CSV are deleted; other products are left alone.
  *
@@ -26,6 +27,24 @@ import { adminClient, groupProducts, readCatalog } from "./lib.mjs"
 
 const LOCALE = "en-US"
 const PLACEHOLDER_PRICE = 1
+
+/**
+ * Selling price from the cost calculation in Notion ("My Price"):
+ * (plastic 23 €/kg + power 0.2 kW × 0.336 €/kWh + printer amortisation
+ * 0.152 €/h) × 1.1 scrap × 1.6 margin, rounded to 0.50 €.
+ */
+const PRICE_PER_GRAM = 0.023 * 1.1 * 1.6
+const PRICE_PER_HOUR = (0.2 * 0.336 + 0.152207) * 1.1 * 1.6
+const num = (value) => (value ? Number(value.replace(",", ".")) : NaN)
+const rowPrice = (row) => {
+  if (row.preis_eur) return num(row.preis_eur)
+  const grams = num(row.gewicht_g)
+  const hours = num(row.druckzeit_h)
+  if (Number.isFinite(grams) && Number.isFinite(hours)) {
+    return Math.round((grams * PRICE_PER_GRAM + hours * PRICE_PER_HOUR) * 2) / 2
+  }
+  return null
+}
 const DRY_RUN = process.argv.includes("--dry-run")
 const UPDATE_TEXTS = process.argv.includes("--update-texts")
 
@@ -205,7 +224,7 @@ const variantPayload = ({ row, color }) => ({
   prices: [
     {
       currency_code: "eur",
-      amount: row.preis_eur ? Number(row.preis_eur.replace(",", ".")) : PLACEHOLDER_PRICE,
+      amount: rowPrice(row) ?? PLACEHOLDER_PRICE,
     },
   ],
 })
@@ -301,7 +320,7 @@ for (const product of products) {
     .map(([k, v]) => ({ variant: current.get(k), want: v }))
     .filter(({ variant, want }) => {
       const weight = want.row.gewicht_g ? Number(want.row.gewicht_g) : variant.weight
-      const price = want.row.preis_eur ? Number(want.row.preis_eur.replace(",", ".")) : null
+      const price = rowPrice(want.row)
       const eur = variant.prices?.find((p) => p.currency_code === "eur")?.amount
       const onRequest = want.color === ON_REQUEST_COLOR.value
       return (
@@ -358,7 +377,7 @@ for (const product of products) {
             id: variant.id,
             ...(payload.weight ? { weight: payload.weight } : {}),
             metadata: { ...variant.metadata, ...payload.metadata },
-            ...(want.row.preis_eur ? { prices: payload.prices } : {}),
+            ...(rowPrice(want.row) !== null ? { prices: payload.prices } : {}),
           }
         }),
       },

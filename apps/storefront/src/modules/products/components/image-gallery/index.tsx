@@ -28,7 +28,7 @@ const ImageGallery = async ({ images, aiEdited }: ImageGalleryProps) => {
           return (
             <Container
               key={image.id}
-              className="relative aspect-square w-full overflow-hidden bg-ui-bg-subtle"
+              className="relative aspect-[4/3] w-full overflow-hidden bg-ui-bg-subtle"
               id={image.id}
             >
               {!!image.url && (

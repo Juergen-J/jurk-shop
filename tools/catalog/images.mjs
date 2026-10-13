@@ -38,6 +38,8 @@ const MAKERWORLD_API = "https://makerworld.com/api/v1/design-service/design"
 const OPENAI_EDITS = "https://api.openai.com/v1/images/edits"
 const IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-1.5"
 const IMAGE_QUALITY = process.env.OPENAI_IMAGE_QUALITY || "medium"
+// Landscape like the MakerWorld covers (4:3); a square canvas squeezes wide boxes.
+const IMAGE_SIZE = process.env.OPENAI_IMAGE_SIZE || "1536x1024"
 
 const args = process.argv.slice(2)
 const command = args[0]
@@ -46,7 +48,7 @@ const onlyArg = args[args.indexOf("--only") + 1]
 const only = args.includes("--only") ? new Set(onlyArg.split(",")) : null
 
 /** Models with photos: [{ id, handle }] in catalog order, once per product. */
-const loadModels = async () => {
+const loadModels = async ({ all = false } = {}) => {
   const seen = new Set()
   return (await readCatalog())
     .filter((r) => r.foto === "ja")
@@ -57,7 +59,7 @@ const loadModels = async () => {
       seen.add(key)
       return true
     })
-    .filter((m) => !only || only.has(m.id))
+    .filter((m) => all || !only || only.has(m.id))
 }
 
 const ext = (url) => (url.match(/\.(png|jpe?g|webp)(\?|$)/i)?.[1] ?? "png").toLowerCase()
@@ -114,7 +116,7 @@ const generate = async (models) => {
   const prompt = await readFile(PROMPT_FILE, "utf8")
   await mkdir(AI, { recursive: true })
   console.log(
-    `model ${IMAGE_MODEL}, quality ${IMAGE_QUALITY}, style reference: ${existsSync(STYLE_FILE) ? "yes" : "no"}`
+    `model ${IMAGE_MODEL}, quality ${IMAGE_QUALITY}, size ${IMAGE_SIZE}, style reference: ${existsSync(STYLE_FILE) ? "yes" : "no"}`
   )
 
   for (const { id, handle } of models) {
@@ -140,7 +142,7 @@ const generate = async (models) => {
         prompt,
         input_fidelity: "high",
         quality: IMAGE_QUALITY,
-        size: "1024x1024",
+        size: IMAGE_SIZE,
         background: "opaque",
         output_format: "jpeg",
         output_compression: 90,
@@ -198,7 +200,11 @@ ${rows.join("\n")}
  * marks the products as having AI-edited photos. A product gets the images of
  * all its models in catalog order; the first one becomes the thumbnail.
  */
-const upload = async (models) => {
+const upload = async (selected) => {
+  // A product's images are replaced as a whole, so --only selects products:
+  // every photo of a product with a selected model is uploaded again.
+  const handles = new Set(selected.map((m) => m.handle))
+  const models = (await loadModels({ all: true })).filter((m) => handles.has(m.handle))
   const admin = await adminClient()
   console.log(`uploading to ${admin.baseUrl}`)
 
