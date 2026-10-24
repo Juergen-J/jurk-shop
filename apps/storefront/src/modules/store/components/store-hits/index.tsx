@@ -1,24 +1,14 @@
 "use client"
 
-import type { Hit } from "instantsearch.js"
+import { useTranslations } from "next-intl"
 import { useEffect, useRef } from "react"
 import { useHits, useInstantSearch } from "react-instantsearch"
 
 import useSearchSettled from "@lib/hooks/use-search-settled"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Text } from "@modules/common/components/ui"
-import Thumbnail from "@modules/products/components/thumbnail"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import SearchPagination from "./pagination"
-import HitPrice, { HitPricing } from "./price"
-
-type ProductHit = Hit<
-  {
-    title: string | null
-    handle: string | null
-    thumbnail: string | null
-  } & HitPricing
->
+import HitCard, { ProductHit } from "./hit-card"
 
 type StoreHitsProps = {
   hitsPerPage: number
@@ -26,8 +16,9 @@ type StoreHitsProps = {
 }
 
 const StoreHits = ({ hitsPerPage, currencyCode }: StoreHitsProps) => {
+  const t = useTranslations("store")
   const { items } = useHits<ProductHit>()
-  const { status, error, indexUiState } = useInstantSearch()
+  const { status, indexUiState } = useInstantSearch()
   const { isSearching, hasNoResultsYet } = useSearchSettled()
 
   const { page, ...refinements } = indexUiState
@@ -54,8 +45,7 @@ const StoreHits = ({ hitsPerPage, currencyCode }: StoreHitsProps) => {
         className="py-16 text-center text-ui-fg-error"
         data-testid="products-error"
       >
-        Couldn&apos;t load products
-        {error?.message ? `: ${error.message}` : "."}
+        {t("loadError")}
       </Text>
     )
   }
@@ -69,7 +59,7 @@ const StoreHits = ({ hitsPerPage, currencyCode }: StoreHitsProps) => {
           className="py-16 text-center text-ui-fg-subtle"
           data-testid="no-products"
         >
-          No products matched these filters.
+          {t("noFilterResults")}
         </Text>
       ) : (
         <ul
@@ -79,23 +69,7 @@ const StoreHits = ({ hitsPerPage, currencyCode }: StoreHitsProps) => {
           {items.map((hit) =>
             hit.handle ? (
               <li key={hit.objectID}>
-                <LocalizedClientLink
-                  href={`/products/${hit.handle}`}
-                  className="group"
-                >
-                  <div data-testid="product-wrapper">
-                    <Thumbnail thumbnail={hit.thumbnail} size="full" />
-                    <div className="flex txt-compact-medium mt-4 justify-between">
-                      <Text
-                        className="text-ui-fg-subtle"
-                        data-testid="product-title"
-                      >
-                        {hit.title}
-                      </Text>
-                      <HitPrice hit={hit} currencyCode={currencyCode} />
-                    </div>
-                  </div>
-                </LocalizedClientLink>
+                <HitCard hit={hit} currencyCode={currencyCode} />
               </li>
             ) : null
           )}

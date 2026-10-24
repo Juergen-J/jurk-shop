@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import Spinner from "@modules/common/icons/spinner"
 import {
   ButtonHTMLAttributes,
   forwardRef,
@@ -81,8 +82,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={disabled || isLoading}
+        aria-busy={isLoading || undefined}
         className={clsx(
-          "inline-flex gap-2 items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          "relative inline-flex gap-2 items-center justify-center rounded-md font-medium transition-[color,background-color,border-color,transform] duration-150 ease-out-strong active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
           variant === "primary" && "bg-brand text-white hover:bg-brand-dark",
           variant === "secondary" &&
             "bg-white text-black border border-gray-200 hover:bg-gray-50",
@@ -94,7 +96,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
-        {isLoading ? "Loading..." : children}
+        {/* Spinner over the hidden label: the button keeps its width and needs no translated text */}
+        {isLoading ? (
+          <>
+            <span className="invisible contents">{children}</span>
+            <span className="absolute inset-0 flex items-center justify-center">
+              <Spinner />
+            </span>
+          </>
+        ) : (
+          children
+        )}
       </button>
     )
   }

@@ -12,8 +12,10 @@ type CartIncentivesProps = {
 const ProgressBar = ({ value }: { value: number }) => (
   <div className="h-1.5 w-full rounded-full bg-ui-bg-subtle overflow-hidden">
     <div
-      className="h-full rounded-full bg-brand transition-all"
-      style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
+      className="h-full w-full rounded-full bg-brand transition-transform duration-300 ease-out-strong"
+      style={{
+        transform: `translateX(-${100 - Math.min(100, Math.max(0, value))}%)`,
+      }}
     />
   </div>
 )

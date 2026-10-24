@@ -64,15 +64,15 @@ const MobileActions: React.FC<MobileActionsProps> = ({
         <Transition
           as={Fragment}
           show={show}
-          enter="ease-in-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
+          enter="transition-transform ease-drawer duration-300"
+          enterFrom="translate-y-full"
+          enterTo="translate-y-0"
+          leave="transition-transform ease-out-strong duration-200"
+          leaveFrom="translate-y-0"
+          leaveTo="translate-y-full"
         >
           <div
-            className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t border-gray-200"
+            className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] h-full w-full border-t border-gray-200"
             data-testid="mobile-actions"
           >
             <div className="flex items-center gap-x-2">
@@ -106,22 +106,24 @@ const MobileActions: React.FC<MobileActionsProps> = ({
               {!isSimple && <Button
                 onClick={open}
                 variant="secondary"
-                className="w-full"
+                className="w-full h-auto min-h-10 py-2"
                 data-testid="mobile-actions-button"
               >
-                <div className="flex items-center justify-between w-full">
-                  <span>
+                <div className="flex items-center justify-between gap-x-2 w-full text-left">
+                  <span className="min-w-0">
                     {variant
                       ? Object.values(options).join(" / ")
                       : t("selectOptions")}
                   </span>
-                  <ChevronDown />
+                  <span className="shrink-0">
+                    <ChevronDown />
+                  </span>
                 </div>
               </Button>}
               <Button
                 onClick={handleAddToCart}
                 disabled={!inStock || !variant}
-                className="w-full"
+                className="w-full h-auto min-h-10 py-2"
                 isLoading={isAdding}
                 data-testid="mobile-cart-button"
               >
@@ -139,10 +141,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
         <Dialog as="div" className="relative z-[75]" onClose={close}>
           <Transition.Child
             as={Fragment}
-            enter="ease-out duration-300"
+            enter="transition-opacity ease-out-strong duration-300"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="ease-in duration-200"
+            leave="transition-opacity ease-out-strong duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
@@ -153,12 +155,12 @@ const MobileActions: React.FC<MobileActionsProps> = ({
             <div className="flex min-h-full h-full items-center justify-center text-center">
               <Transition.Child
                 as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
+                enter="transition-transform ease-drawer duration-[400ms]"
+                enterFrom="translate-y-full"
+                enterTo="translate-y-0"
+                leave="transition-transform ease-drawer duration-[250ms]"
+                leaveFrom="translate-y-0"
+                leaveTo="translate-y-full"
               >
                 <Dialog.Panel
                   className="w-full h-full transform overflow-hidden text-left flex flex-col gap-y-3"
@@ -173,7 +175,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                       <X />
                     </button>
                   </div>
-                  <div className="bg-white px-6 py-12">
+                  <div className="bg-white px-6 pt-12 pb-[calc(3rem+env(safe-area-inset-bottom))]">
                     {(product.variants?.length ?? 0) > 1 && (
                       <div className="flex flex-col gap-y-6">
                         {(product.options || []).map((option) => {

@@ -16,10 +16,10 @@ const SearchDrawer = ({ isOpen, close, children }: SearchDrawerProps) => {
       <Dialog as="div" className="relative z-[75]" onClose={close}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out-strong duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="ease-out-strong duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
@@ -30,10 +30,10 @@ const SearchDrawer = ({ isOpen, close, children }: SearchDrawerProps) => {
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
             <Transition.Child
               as={Fragment}
-              enter="transform transition ease-in-out duration-300"
+              enter="transform transition ease-drawer duration-[400ms]"
               enterFrom="translate-x-full"
               enterTo="translate-x-0"
-              leave="transform transition ease-in-out duration-200"
+              leave="transform transition ease-drawer duration-[250ms]"
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
@@ -41,7 +41,7 @@ const SearchDrawer = ({ isOpen, close, children }: SearchDrawerProps) => {
                 className="pointer-events-auto w-screen max-w-md"
                 data-testid="search-drawer"
               >
-                <div className="flex h-full flex-col border-l border-ui-border-base bg-ui-bg-base shadow-elevation-modal">
+                <div className="flex h-full flex-col border-l border-ui-border-base bg-ui-bg-base shadow-elevation-modal pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
                   <div className="flex items-center justify-between border-b border-ui-border-base px-4 py-3">
                     <Dialog.Title className="text-large-semi text-ui-fg-base">
                       Search

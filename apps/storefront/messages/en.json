@@ -35,7 +35,9 @@
     "description": "3D printed to order, made in Germany.",
     "searchTitle": "Search results for “{q}”",
     "noResults": "No products found for “{q}”. Try another term, e.g. the caliber.",
-    "empty": "There are no products here yet."
+    "empty": "There are no products here yet.",
+    "noFilterResults": "No products match these filters.",
+    "loadError": "Couldn't load products."
   },
   "product": {
     "choose": "Choose {option}",
@@ -77,7 +79,8 @@
       "placeholder": "e.g. box red, lettering white, insert black",
       "hint": "We confirm the colors by email before printing. The insert is black unless you say otherwise.",
       "lineItem": "Requested colors"
-    }
+    },
+    "priceOnRequest": "Price on request"
   },
   "cart": {
     "title": "Cart",
@@ -95,7 +98,9 @@
     "empty": "Your cart is empty.",
     "emptyText": "There's nothing in your cart yet. Have a look around our shop.",
     "explore": "Explore products",
-    "goToAllProducts": "Go to all products"
+    "goToAllProducts": "Go to all products",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
   },
   "totals": {
     "subtotal": "Subtotal",

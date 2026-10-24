@@ -35,7 +35,9 @@
     "description": "3D-gedruckt nach deiner Bestellung, gefertigt in Deutschland.",
     "searchTitle": "Suchergebnisse für „{q}“",
     "noResults": "Keine Produkte für „{q}“ gefunden. Versuche es mit einem anderen Begriff, z. B. dem Kaliber.",
-    "empty": "Hier gibt es noch keine Produkte."
+    "empty": "Hier gibt es noch keine Produkte.",
+    "noFilterResults": "Keine Produkte passen zu diesen Filtern.",
+    "loadError": "Produkte konnten nicht geladen werden."
   },
   "product": {
     "choose": "{option} wählen",
@@ -77,7 +79,8 @@
       "placeholder": "z. B. Box Rot, Schrift Weiß, Einsatz Schwarz",
       "hint": "Wir bestätigen die Farbe per E-Mail, bevor wir drucken. Ohne Angabe ist der Einsatz schwarz.",
       "lineItem": "Wunschfarbe"
-    }
+    },
+    "priceOnRequest": "Preis auf Anfrage"
   },
   "cart": {
     "title": "Warenkorb",
@@ -95,7 +98,9 @@
     "empty": "Dein Warenkorb ist leer.",
     "emptyText": "Du hast noch nichts im Warenkorb. Schau dich in unserem Shop um.",
     "explore": "Produkte ansehen",
-    "goToAllProducts": "Zu allen Produkten"
+    "goToAllProducts": "Zu allen Produkten",
+    "decrease": "Menge verringern",
+    "increase": "Menge erhöhen"
   },
   "totals": {
     "subtotal": "Zwischensumme",

@@ -39,7 +39,8 @@ const LineItemOptions = ({
               {o.option?.title}: {o.value}
             </span>
           ))
-        : variant?.title}
+        : // Medusa names the variant of a product without options "Default…"; that says nothing
+          !/^default/i.test(variant?.title ?? "") && variant?.title}
       {requestedColor && (
         <span>
           {t("lineItem")}: {requestedColor}

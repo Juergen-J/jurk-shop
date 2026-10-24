@@ -25,7 +25,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   return (
     <Container
       className={clx(
-        "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150",
+        "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover group-active:scale-[0.98] transition-[box-shadow,transform] ease-out-strong duration-150",
         className,
         {
           // Product photos are landscape (see tools/catalog); 4:3 fits both the

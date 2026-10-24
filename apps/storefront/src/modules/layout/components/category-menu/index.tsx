@@ -34,7 +34,7 @@ const CategoryMenu = async ({ tree }: { tree: CategoryNode[] }) => {
               {category.name}
               <ChevronDownMini className="transition-transform group-hover/cat:rotate-180 group-has-[:focus-visible]/cat:rotate-180" />
             </LocalizedClientLink>
-            <div className="invisible opacity-0 group-hover/cat:visible group-hover/cat:opacity-100 group-has-[:focus-visible]/cat:visible group-has-[:focus-visible]/cat:opacity-100 transition-opacity absolute left-0 top-full z-50 pt-1">
+            <div className="invisible opacity-0 group-hover/cat:visible group-hover/cat:opacity-100 group-has-[:focus-visible]/cat:visible group-has-[:focus-visible]/cat:opacity-100 origin-top-left scale-[0.97] group-hover/cat:scale-100 group-has-[:focus-visible]/cat:scale-100 transition-[opacity,transform,visibility] duration-150 ease-out-strong absolute left-0 top-full z-50 pt-1">
               <ul className="min-w-56 rounded-xl border border-ui-border-base bg-white p-2 shadow-elevation-flyout">
                 {category.children.map((child) => (
                   <li key={child.id}>

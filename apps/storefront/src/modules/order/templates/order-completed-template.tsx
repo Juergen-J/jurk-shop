@@ -24,7 +24,7 @@ export default async function OrderCompletedTemplate({
   const productionTiers = await getProductionTiers()
 
   return (
-    <div className="py-6 min-h-[calc(100vh-64px)]">
+    <div className="py-6 min-h-[calc(100svh-64px)]">
       <div className="content-container flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full">
         <div
           className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-10"

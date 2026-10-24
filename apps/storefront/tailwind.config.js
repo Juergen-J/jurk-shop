@@ -2,6 +2,10 @@ const path = require("path")
 
 module.exports = {
   darkMode: "class",
+  // hover: only on devices that can hover, so tapped elements don't stay highlighted
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   presets: [require("@medusajs/ui-preset")],
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
@@ -11,6 +15,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // Strong curves: built-in ease-out is too weak for UI motion
+      transitionTimingFunction: {
+        "out-strong": "cubic-bezier(0.23, 1, 0.32, 1)",
+        drawer: "cubic-bezier(0.32, 0.72, 0, 1)",
+      },
       transitionProperty: {
         width: "width margin",
         height: "height",

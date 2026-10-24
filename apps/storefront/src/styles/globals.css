@@ -18,6 +18,42 @@ body {
   background-color: #ffffff;
 }
 
+/* Mobile: no gray tap flash, no font inflation in landscape */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Controls: click fires without the double-tap wait, long-press doesn't select the label */
+button,
+[role="button"] {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+a {
+  touch-action: manipulation;
+}
+
+/* Reduced motion: keep fades and color changes, drop movement (drawers and sheets appear in place) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-property: opacity, color, background-color, border-color, box-shadow !important;
+  }
+}
+
+/* iOS zooms into any field under 16px and doesn't zoom back out */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -71,7 +107,7 @@ body {
   }
 
   .contrast-btn {
-    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-out-strong;
   }
 
   .text-xsmall-regular {

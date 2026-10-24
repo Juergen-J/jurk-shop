@@ -27,17 +27,17 @@ const SideMenu = ({ categories }: { categories: CategoryNode[] }) => {
           <Transition
             show={open}
             as={Fragment}
-            enter="transition ease-out duration-150"
+            enter="transition ease-out-strong duration-200"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="transition ease-in duration-150"
+            leave="transition ease-out-strong duration-150"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
             {/* Portal: the header's backdrop-blur would otherwise confine the fixed panel. */}
             <PopoverPanel
               portal
-              className="fixed inset-0 z-[51] bg-white flex flex-col p-6"
+              className="fixed inset-0 z-[51] bg-white flex flex-col p-6 pt-[calc(1.5rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
             >
               <div className="flex justify-end">
                 <button
@@ -48,7 +48,7 @@ const SideMenu = ({ categories }: { categories: CategoryNode[] }) => {
                   <XMark />
                 </button>
               </div>
-              <ul className="flex flex-col gap-5 mt-6 overflow-y-auto pb-6">
+              <ul className="flex flex-col gap-5 mt-6 overflow-y-auto overscroll-contain pb-6">
                 <li>
                   <LocalizedClientLink
                     href="/"

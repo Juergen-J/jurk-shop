@@ -64,7 +64,7 @@ const SearchPanel = ({ onNavigate }: { onNavigate: () => void }) => {
         />
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto overscroll-contain">
         {!hasInput ? (
           <Text
             className="px-4 py-6 text-center text-ui-fg-muted"

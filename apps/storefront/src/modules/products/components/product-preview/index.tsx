@@ -36,11 +36,15 @@ export default async function ProductPreview({
           size="full"
           isFeatured={isFeatured}
         />
-        <div className="flex txt-compact-medium mt-4 justify-between">
-          <Text className="text-ui-fg-subtle" data-testid="product-title">
+        {/* Same layout as the catalog card (store-hits/hit-card): price under the title */}
+        <div className="flex flex-col gap-y-1 txt-compact-medium mt-4 min-w-0">
+          <Text
+            className="text-ui-fg-subtle [overflow-wrap:anywhere]"
+            data-testid="product-title"
+          >
             {product.title}
           </Text>
-          <div className="flex items-center gap-x-2">
+          <div className="flex flex-wrap items-baseline gap-x-2 tabular-nums">
             {cheapestPrice && <PreviewPrice price={cheapestPrice} />}
           </div>
         </div>

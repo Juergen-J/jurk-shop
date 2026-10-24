@@ -51,7 +51,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={name}
             onClick={() => inputRef.current?.focus()}
-            className="flex items-center justify-center mx-3 px-1 transition-all absolute duration-300 top-3 -z-1 origin-0 text-ui-fg-subtle"
+            className="flex items-center justify-center mx-3 px-1 transition-[transform,font-size,color] absolute duration-150 ease-out-strong top-3 -z-1 origin-0 text-ui-fg-subtle"
           >
             {label}
             {required && <span className="text-rose-500">*</span>}
@@ -60,7 +60,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="text-ui-fg-subtle px-4 focus:outline-none transition-all duration-150 outline-none focus:text-ui-fg-base absolute right-0 top-3"
+              className="text-ui-fg-subtle px-4 focus:outline-none transition-colors duration-150 outline-none focus:text-ui-fg-base absolute right-0 top-3"
             >
               {showPassword ? <Eye /> : <EyeOff />}
             </button>

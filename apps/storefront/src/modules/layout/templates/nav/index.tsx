@@ -16,7 +16,7 @@ export default async function Nav() {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative mx-auto border-b duration-200 bg-white/80 backdrop-blur border-ui-border-base">
+      <header className="relative mx-auto border-b duration-200 bg-white/80 backdrop-blur border-ui-border-base pt-[env(safe-area-inset-top)]">
         <nav className="content-container text-ui-fg-subtle flex items-center justify-between gap-x-6 w-full h-16 txt-compact-medium">
           <Logo />
 
