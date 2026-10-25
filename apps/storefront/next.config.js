@@ -30,6 +30,21 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Point agents to the machine-readable overviews (RFC 8288 Link header)
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Link",
+            value:
+              '</llms.txt>; rel="describedby"; type="text/markdown", </sitemap.xml>; rel="sitemap"; type="application/xml"',
+          },
+        ],
+      },
+    ]
+  },
   images: {
     unoptimized: true,
     remotePatterns: [
