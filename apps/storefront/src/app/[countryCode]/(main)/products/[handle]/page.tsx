@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
+import ProductJsonLd from "@modules/products/components/product-json-ld"
 import { HttpTypes } from "@medusajs/types"
 import { getShopSettings } from "@lib/data/shop-settings"
 
@@ -47,12 +48,17 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  // Search snippets show ~155 characters; the title alone said nothing new
+  const description = (product.description ?? product.subtitle ?? product.title)
+    .replace(/\s+/g, " ")
+    .slice(0, 155)
+
   return {
     title: `${product.title} | ${SHOP_NAME}`,
-    description: `${product.title}`,
+    description,
     openGraph: {
       title: `${product.title} | ${SHOP_NAME}`,
-      description: `${product.title}`,
+      description,
       images: product.thumbnail ? [product.thumbnail] : [],
     },
   }
@@ -82,12 +88,15 @@ export default async function ProductPage(props: Props) {
   const shopSettings = await getShopSettings()
 
   return (
-    <ProductTemplate
-      product={pricedProduct}
-      region={region}
-      countryCode={params.countryCode}
-      images={images ?? []}
-      shopSettings={shopSettings}
-    />
+    <>
+      <ProductJsonLd product={pricedProduct} />
+      <ProductTemplate
+        product={pricedProduct}
+        region={region}
+        countryCode={params.countryCode}
+        images={images ?? []}
+        shopSettings={shopSettings}
+      />
+    </>
   )
 }

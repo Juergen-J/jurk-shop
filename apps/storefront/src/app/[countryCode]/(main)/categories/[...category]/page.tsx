@@ -27,12 +27,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
     const description = productCategory.description ?? productCategory.name
 
+    // canonical comes from the layout ("./" = this page's own path)
     return {
       title,
       description,
-      alternates: {
-        canonical: `${params.category.join("/")}`,
-      },
     }
   } catch {
     notFound()

@@ -9,6 +9,8 @@ import Nav from "@modules/layout/templates/nav"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
+  // Every page is its own canonical URL, without query strings (?v_id, ?q, ?page)
+  alternates: { canonical: "./" },
 }
 
 export default async function PageLayout(props: { children: React.ReactNode }) {
